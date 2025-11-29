@@ -60,6 +60,18 @@ public class Main {
         System.out.println("\nDiagnostic Complete.");
         System.out.println("Overall System Health: " + healthPercentage + "%");
 
+        // --- SECTION 3: NAVIGATION MODULE (Unit Converter) ---
+        // Based on Practical Problem 4: Convert Kilometers to Miles
+        System.out.println("\n--- NAVIGATION SUBSYSTEM ---");
+        System.out.print("Enter target distance (in Kilometers): ");
+
+        double kilometers = input.nextDouble();
+        double conversionFactor = 0.621371;
+        double miles = kilometers * conversionFactor;
+
+        System.out.println("Calculating trajectory...");
+        System.out.println(kilometers + " km is equivalent to " + miles + " miles.");
+
         // 5. Close the scanner (Good practice)
         input.close();
     }
