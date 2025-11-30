@@ -18,7 +18,7 @@ public class Main {
         System.out.print("Enter Security PIN: ");
         int pin = input.nextInt();                      // Reads an integer
         
-        // System Variables (Our "Database")
+        // System Variables
         long systemChipId = 987654321000L;
         float cpuTemperature = 45.5f;
         boolean isSystemActive = true;
@@ -31,7 +31,7 @@ public class Main {
         System.out.println("CPU Temp: " + cpuTemperature + "C");               // Prints the Char
         System.out .println("Active: " + isSystemActive);
 
-        // --- SECTION 2: SYSTEM DIAGNOSTIC (Based on Percentage Calculation)
+        // --- SECTION 2: SYSTEM DIAGNOSTIC (Percentage Calculation) ---
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
         System.out.println("Please enter status (0-100) for the following modules:");
 
@@ -52,7 +52,6 @@ public class Main {
         int security = input.nextInt();
 
         // Calculate Percentage
-        // Total possible score is 500 (100 * 5)
         float totalScore = energy + logic + memory + network + security;
         float healthPercentage = (totalScore / 500.0f) * 100;
 
@@ -61,7 +60,6 @@ public class Main {
         System.out.println("Overall System Health: " + healthPercentage + "%");
 
         // --- SECTION 3: NAVIGATION MODULE (Unit Converter) ---
-        // Based on Practical Problem 4: Convert Kilometers to Miles
         System.out.println("\n--- NAVIGATION SUBSYSTEM ---");
         System.out.print("Enter target distance (in Kilometers): ");
 
@@ -72,7 +70,25 @@ public class Main {
         System.out.println("Calculating trajectory...");
         System.out.println(kilometers + " km is equivalent to " + miles + " miles.");
 
-        // 5. Close the scanner (Good practice)
+        // --- SECTION 4: OPERATION STATUS (Operators Demo) ---
+        System.out.println("\n--- OPERATION STATUS ---");
+
+        // 1. Comparision Operators: Check stability
+        boolean isStable = healthPercentage > 70;
+
+        // 2. Logical Operators: Check strict security (Requires Master PIN 1234 AND Stable System)
+        boolean isSecure = (pin == 1234) && isStable;
+
+        // 3. Modulo Operator: Check Maintenance Cycle (Every 1000km)
+        // This calculation how many kms have passed since the last 1000km mark.
+        double maintenanceRemainder = kilometers % 1000;
+
+        System.out.println("System Stable (Health > 70%): " + isStable);
+        System.out.println("Master Access (PIN is 1234): " + (pin == 1234));
+        System.out.println("System Secure (Stable + Master): " + isSecure);
+        System.out.println("Distance since last maintenance: " + maintenanceRemainder);
+
+        // Close the scanner (Good practice)
         input.close();
     }
 }
