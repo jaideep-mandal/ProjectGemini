@@ -13,10 +13,10 @@ public class Main {
 
         // --- SECTION 1: USER LOGIN ---
         System.out.print("Enter User Name: ");
-        String userName = input.nextLine();         // Reads the whole line (e.g. "Jhon Doe")
+        String userName = input.nextLine();         
 
         System.out.print("Enter Security PIN: ");
-        int pin = input.nextInt();                      // Reads an integer
+        int pin = input.nextInt();                      
         
         // System Variables
         long systemChipId = 987654321000L;
@@ -91,20 +91,39 @@ public class Main {
         System.out.print("Enter Velocity (m/s): ");
         double velocity = input.nextDouble();
 
-        // Formula: KE = 0.5 * m * v^2
-        // Precedence: Multiplication happens Left-to-Right.
         double kineticEnergy = 0.5 * mass * (velocity * velocity);
-
         System.out.println("Kinetic Energy: " + kineticEnergy + " Joules");
 
-        // Complex Expression: Equation of Motion (v^2 - u^2) / (2a)
-        // We will assume initial velocity (u) is 0 and acceleration (a) is 9.8
         double u = 0;
         double a = 9.8;
-        // Without parentheses, this would calculate incorrectly!
         double displacement = ((velocity * velocity) - (u * u)) / (2 * a);
-
         System.out.println("Theoretical Displacement to reach this velocity: " + displacement + " meters");
+
+        // --- SECTION 6: POWER CALIBRATION & ENCRYPTION (Increment/Decrement) ---
+        System.out.println("\n--- POWER CALIBRATION MODULE ---");
+        int calibrationStart = 50;
+
+        System.out.println("Initial Calibration Value: " + calibrationStart);
+        // Postfix: Uses 50, THEN becomes 51
+        System.out.println("Reading with Postfix (i++): " + calibrationStart++);
+        System.out.println("Current Value after Postfix: " + calibrationStart);
+
+        // Prefix: Becomes 52, THEN Uses 52
+        System.out.println("Reading with Prefix (i++): " + ++calibrationStart);
+
+        System.out.println("\n--- ENCRYPTION KEY GENERATOR ---");
+        char keyBase = 'A';
+        System.out.println("Base Key: " + keyBase);
+
+        keyBase++;                                          // Incrementing a char! 'A' becomes 'B'
+        System.out.print("Generated Sequence: " + keyBase);
+
+        keyBase++;
+        System.out.print(" -> " + keyBase);
+
+        keyBase++;
+        System.out.print(" -> " + keyBase);
+        System.out.println("\n(Key generation complete using Character Increment");
 
         // Close the scanner
         input.close();
