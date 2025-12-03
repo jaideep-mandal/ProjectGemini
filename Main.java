@@ -101,12 +101,9 @@ public class Main {
         // --- SECTION 6: SECURE ENCRYPTION CHANNEL (Type Casting & Char Math) ---
         System.out.println("\n--- SECURE ENCRYPTION CHANNEL ---");
 
-        // 1. Define a secret character (e.g., Mission Rank)
         char originalRank = 'A';
         System.out.println("Original Mission Rank: " + originalRank);
 
-        // 2. ENCRYPT: Add a 'key' (8) to the character
-        // We must cast (char) because the result of 'A' + 8 is an int
         char encryptedRank = (char)(originalRank + 8);
         System.out.println("Encrypting data...");
         System.out.println("Encrypted Rank sent to HQ: " + encryptedRank);
@@ -114,6 +111,26 @@ public class Main {
         char decryptedRank = (char)(originalRank - 8);
         System.out.println("Decrypting incoming data...");                                    
         System.out.println("Verified Mission Rank: " + decryptedRank);
+
+        // --- SECTION 7: PRECISION CALIBRATION & LOGIC CHECK ---
+        System.out.println("\n--- SYSTEM EFFICIENCY CALIBRATION ---");
+
+        // The Trap: Integer Division
+        // 7/4 = 1, 9/2 = 4. So 1 * 4 = 4.
+        float roughRating = 7/4 * 9/2;
+        System.out.println("Rough Efficiency Rating (Int Math): " + roughRating + " (INACCURATE)");
+
+        // The Fix: Floating Point Division
+        // 7.0/4 = 1.75, 9.0/2 = 4.5. So 1.75 * 4.5 = 7.875
+        float preciseRating = 7.0f/4.0f * 9.0f/2.0f;
+        System.out.println("Precise Efficiency Rating (Float Math): " + preciseRating + " (ACCURATE)");
+
+        System.out.print("Enter Minimum Efficiency Threshold to proceed: ");
+        float userThreshold = input.nextFloat();
+
+        // Comparison Logic
+        boolean isEfficient = preciseRating > userThreshold;
+        System.out.println("System Efficiency > Threshold? " + isEfficient);
 
         // Close the scanner
         input.close();
