@@ -1,6 +1,7 @@
 import java.util.Scanner;   // Import the Scanner class
 
 public class Main {
+
     public static void main(String[] args){
         bootSystem();
     }
@@ -115,22 +116,39 @@ public class Main {
         // --- SECTION 7: PRECISION CALIBRATION & LOGIC CHECK ---
         System.out.println("\n--- SYSTEM EFFICIENCY CALIBRATION ---");
 
-        // The Trap: Integer Division
-        // 7/4 = 1, 9/2 = 4. So 1 * 4 = 4.
         float roughRating = 7/4 * 9/2;
         System.out.println("Rough Efficiency Rating (Int Math): " + roughRating + " (INACCURATE)");
 
-        // The Fix: Floating Point Division
-        // 7.0/4 = 1.75, 9.0/2 = 4.5. So 1.75 * 4.5 = 7.875
         float preciseRating = 7.0f/4.0f * 9.0f/2.0f;
         System.out.println("Precise Efficiency Rating (Float Math): " + preciseRating + " (ACCURATE)");
 
         System.out.print("Enter Minimum Efficiency Threshold to proceed: ");
         float userThreshold = input.nextFloat();
 
-        // Comparison Logic
         boolean isEfficient = preciseRating > userThreshold;
         System.out.println("System Efficiency > Threshold? " + isEfficient);
+
+        // --- SECTION 8: MISSION LOG & FORMATTED REPORT (String & printf) ---
+        System.out.println("\n--- MISSION REPORT GENERATION ---");
+
+        // FIXING THE SCANNER TRAP:
+        // We just used input.nextFloat() above. This leaves a "newline" character.
+        // We must consume it before reading a new String.
+        input.nextLine();
+
+        System.out.print("Enter Mission Log Notes: ");
+        String missionLog = input.nextLine();               // Now this will work correctly!
+
+        System.out.println("\nGenerating Final Formatted Report...");
+        System.out.println("==========================================");
+        // Using prinf for clean columns and 2 decimal places (%.2f)
+        System.out.printf("%-20s : %s\n", "Commander", userName);
+        System.out.printf("%-20s : %d\n", "Mission ID", pin);
+        System.out.printf("%-20s : %.2f%%\n", "Health Status", healthPercentage);
+        System.out.printf("%-20s : %.2f km\n", "Distance Target", kilometers);
+        System.out.printf("%-20s : %.2f J\n", "Kinetic Energy", kineticEnergy);
+        System.out.printf("%-20s : %s\n", "Log Entry", missionLog);
+        System.out.println("==========================================");
 
         // Close the scanner
         input.close();
