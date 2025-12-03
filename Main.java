@@ -35,7 +35,6 @@ public class Main {
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
         System.out.println("Please enter status (0-100) for the following modules:");
 
-        // Get Input for 5 "Subsystems"
         System.out.print("1. Energy Core: ");
         int energy = input.nextInt();
 
@@ -99,31 +98,22 @@ public class Main {
         double displacement = ((velocity * velocity) - (u * u)) / (2 * a);
         System.out.println("Theoretical Displacement to reach this velocity: " + displacement + " meters");
 
-        // --- SECTION 6: POWER CALIBRATION & ENCRYPTION (Increment/Decrement) ---
-        System.out.println("\n--- POWER CALIBRATION MODULE ---");
-        int calibrationStart = 50;
+        // --- SECTION 6: SECURE ENCRYPTION CHANNEL (Type Casting & Char Math) ---
+        System.out.println("\n--- SECURE ENCRYPTION CHANNEL ---");
 
-        System.out.println("Initial Calibration Value: " + calibrationStart);
-        // Postfix: Uses 50, THEN becomes 51
-        System.out.println("Reading with Postfix (i++): " + calibrationStart++);
-        System.out.println("Current Value after Postfix: " + calibrationStart);
+        // 1. Define a secret character (e.g., Mission Rank)
+        char originalRank = 'A';
+        System.out.println("Original Mission Rank: " + originalRank);
 
-        // Prefix: Becomes 52, THEN Uses 52
-        System.out.println("Reading with Prefix (i++): " + ++calibrationStart);
+        // 2. ENCRYPT: Add a 'key' (8) to the character
+        // We must cast (char) because the result of 'A' + 8 is an int
+        char encryptedRank = (char)(originalRank + 8);
+        System.out.println("Encrypting data...");
+        System.out.println("Encrypted Rank sent to HQ: " + encryptedRank);
 
-        System.out.println("\n--- ENCRYPTION KEY GENERATOR ---");
-        char keyBase = 'A';
-        System.out.println("Base Key: " + keyBase);
-
-        keyBase++;                                          // Incrementing a char! 'A' becomes 'B'
-        System.out.print("Generated Sequence: " + keyBase);
-
-        keyBase++;
-        System.out.print(" -> " + keyBase);
-
-        keyBase++;
-        System.out.print(" -> " + keyBase);
-        System.out.println("\n(Key generation complete using Character Increment");
+        char decryptedRank = (char)(originalRank - 8);
+        System.out.println("Decrypting incoming data...");                                    
+        System.out.println("Verified Mission Rank: " + decryptedRank);
 
         // Close the scanner
         input.close();
