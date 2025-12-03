@@ -131,17 +131,13 @@ public class Main {
         // --- SECTION 8: MISSION LOG & FORMATTED REPORT (String & printf) ---
         System.out.println("\n--- MISSION REPORT GENERATION ---");
 
-        // FIXING THE SCANNER TRAP:
-        // We just used input.nextFloat() above. This leaves a "newline" character.
-        // We must consume it before reading a new String.
-        input.nextLine();
+        input.nextLine();   // Consuming leftover newline
 
         System.out.print("Enter Mission Log Notes: ");
-        String missionLog = input.nextLine();               // Now this will work correctly!
+        String missionLog = input.nextLine();
 
         System.out.println("\nGenerating Final Formatted Report...");
         System.out.println("==========================================");
-        // Using prinf for clean columns and 2 decimal places (%.2f)
         System.out.printf("%-20s : %s\n", "Commander", userName);
         System.out.printf("%-20s : %d\n", "Mission ID", pin);
         System.out.printf("%-20s : %.2f%%\n", "Health Status", healthPercentage);
@@ -149,6 +145,31 @@ public class Main {
         System.out.printf("%-20s : %.2f J\n", "Kinetic Energy", kineticEnergy);
         System.out.printf("%-20s : %s\n", "Log Entry", missionLog);
         System.out.println("==========================================");
+
+        // --- SECTION 9: TEXT PROCESSING & COMMAND ANALYSIS (String Methods) ---
+        System.out.println("\n--- TEX PROCESSOR ANALYSIS ---");
+
+        // 1. Clening Input
+        String cleanLog = missionLog.trim();
+        System.out.println("Cleaned Log Length: " + cleanLog.length());
+        System.out.println("Log in Uppercase: " + cleanLog.toUpperCase());
+
+        // 2. Keyword Detection
+        // Check if the log mentions "Failure" (case-insensitive)
+        boolean mentionsFailure = cleanLog.toLowerCase().contains("failure");
+        System.out.println("Urgent Mention ('Failure'): " + mentionsFailure);
+
+        // 3. command Parsing
+        // If the user typed "OVERRIDE" as the very first word, trigger admin mode.
+        // We use startsWith to check the beginning
+        boolean isOverrideCommand = cleanLog.toUpperCase().startsWith("OVERRIDE");
+
+        System.out.println("Override Command Detected: " + isOverrideCommand);
+
+        // 4. Replacement (Censorship Filter)
+        // Replace "danger" with "[REDACTED"
+        String safeLog = cleanLog.replace("danger", "[REDACTED]");
+        System.out.println("Sanitized Log for Public Record: " + safeLog);
 
         // Close the scanner
         input.close();
