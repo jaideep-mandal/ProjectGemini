@@ -149,27 +149,45 @@ public class Main {
         // --- SECTION 9: TEXT PROCESSING & COMMAND ANALYSIS (String Methods) ---
         System.out.println("\n--- TEX PROCESSOR ANALYSIS ---");
 
-        // 1. Clening Input
         String cleanLog = missionLog.trim();
         System.out.println("Cleaned Log Length: " + cleanLog.length());
         System.out.println("Log in Uppercase: " + cleanLog.toUpperCase());
 
-        // 2. Keyword Detection
-        // Check if the log mentions "Failure" (case-insensitive)
         boolean mentionsFailure = cleanLog.toLowerCase().contains("failure");
         System.out.println("Urgent Mention ('Failure'): " + mentionsFailure);
 
-        // 3. command Parsing
-        // If the user typed "OVERRIDE" as the very first word, trigger admin mode.
-        // We use startsWith to check the beginning
         boolean isOverrideCommand = cleanLog.toUpperCase().startsWith("OVERRIDE");
-
         System.out.println("Override Command Detected: " + isOverrideCommand);
 
-        // 4. Replacement (Censorship Filter)
-        // Replace "danger" with "[REDACTED"
         String safeLog = cleanLog.replace("danger", "[REDACTED]");
         System.out.println("Sanitized Log for Public Record: " + safeLog);
+
+        // --- SECTION 10: TRANSMISSION UPLINK (Practice Set Application) ---
+        System.out.println("\n--- TRANSMISSION UPLINK ---");
+
+        // 1. Generate Filename (Problem 2 Logic: Lowercase & Underscores)
+        // e.g., "Commander Shepard" -> "commander_shepard_log.txt"
+        String filename = userName.toLowerCase().replace(" ", "_") + "_log.txt";
+        System.out.println("Saving data to system file: " + filename);
+
+        // 2. Messege Templete (Problem 3 Logic: Filling a template)
+        // We define a standard format with placeholders <|TAG|>
+        String template = "To: HQ\nFrom: Commander <|name|>\nStatus: <|status|>\nMessege: <|log|>\nEnd Transmission.";
+
+        String finalTransmission = template.replace("<|name|>", userName)
+                                            .replace("<|status|>", (isStable ? "STABLE" : "UNSTABLE"))
+                                            .replace("<|log|>", safeLog);
+
+        System.out.println("\n[UPLINKING MESSEGE...]");
+        System.out.println(finalTransmission);
+
+        // 3. Noise Detection (Problem 4 Logic: Detecting Double Spaces)
+        // In a real transmission, double spaces might indicate corrupted data or signal noise.
+        if (finalTransmission.indexOf(" ") != -1) {
+            System.out.println("\n[WARNING]: Double-spaces detected in transmission. Signal contains static.");
+        } else {
+            System.out.println("\n[SUCCESS]: Transmission signal is clear.");
+        }
 
         // Close the scanner
         input.close();
