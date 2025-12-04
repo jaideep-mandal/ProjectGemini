@@ -28,8 +28,6 @@ public class Main {
         System.out.println("\n--- ACCESS GRANTED ---");
         System.out.println("Welcome, " + userName + "!");
         System.out.println("Security PIN Verified: " + pin);
-        System.out.println("Chip ID: " + systemChipId);                     // Prints the Long
-        System.out.println("CPU Temp: " + cpuTemperature + "C");               // Prints the Char
         System.out .println("Active: " + isSystemActive);
 
         // --- SECTION 2: SYSTEM DIAGNOSTIC (Percentage Calculation) ---
@@ -38,155 +36,109 @@ public class Main {
 
         System.out.print("1. Energy Core: ");
         int energy = input.nextInt();
-
         System.out.print("2. Logic Matrix: ");
         int logic = input.nextInt();
-
         System.out.print("3. Memory Bank: ");
         int memory = input.nextInt();
-
         System.out.print("4. Network Module: ");
         int network = input.nextInt();
-
         System.out.print("5. Security Shield: ");
         int security = input.nextInt();
 
-        // Calculate Percentage
         float totalScore = energy + logic + memory + network + security;
         float healthPercentage = (totalScore / 500.0f) * 100;
 
         System.out.println("\nDiagnostic Complete.");
         System.out.println("Overall System Health: " + healthPercentage + "%");
 
-        // --- SECTION 3: NAVIGATION MODULE (Unit Converter) ---
-        System.out.println("\n--- NAVIGATION SUBSYSTEM ---");
-        System.out.print("Enter target distance (in Kilometers): ");
-
-        double kilometers = input.nextDouble();
-        double conversionFactor = 0.621371;
-        double miles = kilometers * conversionFactor;
-
-        System.out.println("Calculating trajectory...");
-        System.out.println(kilometers + " km is equivalent to " + miles + " miles.");
-
-        // --- SECTION 4: OPERATION STATUS (Operators Demo) ---
-        System.out.println("\n--- OPERATION STATUS ---");
-
+        // --- SECTION 4: OPERATION STATUS ---
+        // (Moved up to be available for global checks)
         boolean isStable = healthPercentage > 70;
         boolean isSecure = (pin == 1234) && isStable;
-        double maintenanceRemainder = kilometers % 1000;
 
-        System.out.println("System Stable (Health > 70%): " + isStable);
-        System.out.println("Master Access (PIN is 1234): " + (pin == 1234));
-        System.out.println("System Secure (Stable + Master): " + isSecure);
-        System.out.println("Distance since last maintenance: " + maintenanceRemainder);
+        System.out.println("System Stable: " + isStable);
+        System.out.println("System Secure: " + isSecure);
 
-        // --- SECTION 5: PHYSICS ENGINE (Precedence & Associativity) ---
-        System.out.println("\n--- PHYSICS ENGINE ---");
-        System.out.println("Calculating Kinetic Energy of the System Ship...");
+        // --- SECTION 11: COMMAND INTERFACE (Conditionals) ---
+        // This replaces the linear execution. The users now CHOOSES what to do.
 
-        System.out.print("Enter Mass (kg): ");
-        double mass = input.nextDouble();
+        input.nextLine();   // CONSUME THE LEFTOVER NEW LINE FROM nextInt() above!
 
-        System.out.print("Enter Velocity (m/s): ");
-        double velocity = input.nextDouble();
+        System.out.println("\n==========================================");
+        System.out.println("AVAILABLE MODULES:");
+        System.out.println("1. [PHYSICS] - Kinetic Energy & Displacement Calculator");
+        System.out.println("2. [ENCRYPT] - Secure Community Encoder");
+        System.out.println("3. [UPLINK]  - Mission Report Generator");
+        System.out.println("\n==========================================");
+        System.out.println("ENTER COMMAND MODULE NAME: ");
 
-        double kineticEnergy = 0.5 * mass * (velocity * velocity);
-        System.out.println("Kinetic Energy: " + kineticEnergy + " Joules");
+        String command = input.nextLine();
 
-        double u = 0;
-        double a = 9.8;
-        double displacement = ((velocity * velocity) - (u * u)) / (2 * a);
-        System.out.println("Theoretical Displacement to reach this velocity: " + displacement + " meters");
+        // THE BRANCHING PATH (If-Else-If Ladder)
+        if (command.equalsIgnoreCase("PHYSICS")) {
+            
+            // --- MOVED SECTION 5: PHYSICS ENGINE ---
+            System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
 
-        // --- SECTION 6: SECURE ENCRYPTION CHANNEL (Type Casting & Char Math) ---
-        System.out.println("\n--- SECURE ENCRYPTION CHANNEL ---");
+            System.out.print("Enter Mass (kg): ");
+            double mass = input.nextDouble();
+            System.out.print("Enter Velocity (m/s): ");
+            double velocity = input.nextDouble();
 
-        char originalRank = 'A';
-        System.out.println("Original Mission Rank: " + originalRank);
+            double kineticEnergy = 0.5 * mass * (velocity * velocity);
+            System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
 
-        char encryptedRank = (char)(originalRank + 8);
-        System.out.println("Encrypting data...");
-        System.out.println("Encrypted Rank sent to HQ: " + encryptedRank);
+            double u = 0;
+            double a = 9.8;
+            double displacement = ((velocity * velocity) - (u * u)) / (2 * a);
+            System.out.printf("Theoretical Displacement to reach this velocity: %.2f meters\n" + displacement);
 
-        char decryptedRank = (char)(originalRank - 8);
-        System.out.println("Decrypting incoming data...");                                    
-        System.out.println("Verified Mission Rank: " + decryptedRank);
+        } else if (command.equalsIgnoreCase("ENCRYPT")) {
 
-        // --- SECTION 7: PRECISION CALIBRATION & LOGIC CHECK ---
-        System.out.println("\n--- SYSTEM EFFICIENCY CALIBRATION ---");
+            // --- MOVED SECTION 6: SECURE ENCRYPTION CHANNEL ---
+            System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
 
-        float roughRating = 7/4 * 9/2;
-        System.out.println("Rough Efficiency Rating (Int Math): " + roughRating + " (INACCURATE)");
+            char originalRank = 'A';
+            System.out.println("Original Mission Rank: " + originalRank);
 
-        float preciseRating = 7.0f/4.0f * 9.0f/2.0f;
-        System.out.println("Precise Efficiency Rating (Float Math): " + preciseRating + " (ACCURATE)");
+            char encryptedRank = (char)(originalRank + 8);
+            System.out.println("Encrypting data... Key: " + encryptedRank);
 
-        System.out.print("Enter Minimum Efficiency Threshold to proceed: ");
-        float userThreshold = input.nextFloat();
+            char decryptedRank = (char)(originalRank - 8);
+            System.out.println("Decrypting verification... " + decryptedRank);
 
-        boolean isEfficient = preciseRating > userThreshold;
-        System.out.println("System Efficiency > Threshold? " + isEfficient);
+        } else if (command.equalsIgnoreCase("UPLINK")) {
 
-        // --- SECTION 8: MISSION LOG & FORMATTED REPORT (String & printf) ---
-        System.out.println("\n--- MISSION REPORT GENERATION ---");
+            // --- MOVED SECTION 10: TRANSMISSION UPLINK ---
+            // Security Gate: Only allow Uplink if system is SECURE
+            if (isSecure) {
+                System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
 
-        input.nextLine();   // Consuming leftover newline
+                System.out.print("Enter Mission Log Notes: ");
+                String missionLog = input.nextLine();
 
-        System.out.print("Enter Mission Log Notes: ");
-        String missionLog = input.nextLine();
+                String cleanLog = missionLog.trim();
+                String safeLog = cleanLog.replace("danger", "[REDACTED]");
+                String filename = userName.toLowerCase().replace(" ", "_") + "_log.txt";
 
-        System.out.println("\nGenerating Final Formatted Report...");
-        System.out.println("==========================================");
-        System.out.printf("%-20s : %s\n", "Commander", userName);
-        System.out.printf("%-20s : %d\n", "Mission ID", pin);
-        System.out.printf("%-20s : %.2f%%\n", "Health Status", healthPercentage);
-        System.out.printf("%-20s : %.2f km\n", "Distance Target", kilometers);
-        System.out.printf("%-20s : %.2f J\n", "Kinetic Energy", kineticEnergy);
-        System.out.printf("%-20s : %s\n", "Log Entry", missionLog);
-        System.out.println("==========================================");
+                System.out.println("Generating file: " + filename);
 
-        // --- SECTION 9: TEXT PROCESSING & COMMAND ANALYSIS (String Methods) ---
-        System.out.println("\n--- TEX PROCESSOR ANALYSIS ---");
+                String template = "To: HQ\nFrom: Commander <|name|>\nStatus: <|status|>\nMessege: <|log|>\nEnd Transmission.";
+                String finalTransmission = template.replace("<|name|>", userName)
+                                                    .replace("<|status|>", (isStable ? "STABLE" : "UNSTABLE"))
+                                                    .replace("<|log|>", safeLog);
 
-        String cleanLog = missionLog.trim();
-        System.out.println("Cleaned Log Length: " + cleanLog.length());
-        System.out.println("Log in Uppercase: " + cleanLog.toUpperCase());
+                System.out.println("\n[UPLINKING MESSEGE...]");
+                System.out.println(finalTransmission);
+            } else {
+                // Nested Else for Security Failure
+                System.out.println("\n[ERROR]: SECURITY LOCKDOWN. UPLINK DENIED.");
+                System.out.println("Reason: System is unstable or PIN is invalid.");
+            }
 
-        boolean mentionsFailure = cleanLog.toLowerCase().contains("failure");
-        System.out.println("Urgent Mention ('Failure'): " + mentionsFailure);
-
-        boolean isOverrideCommand = cleanLog.toUpperCase().startsWith("OVERRIDE");
-        System.out.println("Override Command Detected: " + isOverrideCommand);
-
-        String safeLog = cleanLog.replace("danger", "[REDACTED]");
-        System.out.println("Sanitized Log for Public Record: " + safeLog);
-
-        // --- SECTION 10: TRANSMISSION UPLINK (Practice Set Application) ---
-        System.out.println("\n--- TRANSMISSION UPLINK ---");
-
-        // 1. Generate Filename (Problem 2 Logic: Lowercase & Underscores)
-        // e.g., "Commander Shepard" -> "commander_shepard_log.txt"
-        String filename = userName.toLowerCase().replace(" ", "_") + "_log.txt";
-        System.out.println("Saving data to system file: " + filename);
-
-        // 2. Messege Templete (Problem 3 Logic: Filling a template)
-        // We define a standard format with placeholders <|TAG|>
-        String template = "To: HQ\nFrom: Commander <|name|>\nStatus: <|status|>\nMessege: <|log|>\nEnd Transmission.";
-
-        String finalTransmission = template.replace("<|name|>", userName)
-                                            .replace("<|status|>", (isStable ? "STABLE" : "UNSTABLE"))
-                                            .replace("<|log|>", safeLog);
-
-        System.out.println("\n[UPLINKING MESSEGE...]");
-        System.out.println(finalTransmission);
-
-        // 3. Noise Detection (Problem 4 Logic: Detecting Double Spaces)
-        // In a real transmission, double spaces might indicate corrupted data or signal noise.
-        if (finalTransmission.indexOf(" ") != -1) {
-            System.out.println("\n[WARNING]: Double-spaces detected in transmission. Signal contains static.");
         } else {
-            System.out.println("\n[SUCCESS]: Transmission signal is clear.");
+            // Default Else
+            System.out.println("\n[ERROR]: UNKNOWN COMMAND. SYSTEM STANDBY.");
         }
 
         // Close the scanner
