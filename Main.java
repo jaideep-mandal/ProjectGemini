@@ -19,16 +19,23 @@ public class Main {
         System.out.print("Enter Security PIN: ");
         int pin = input.nextInt();                      
         
-        // System Variables
-        long systemChipId = 987654321000L;
-        float cpuTemperature = 45.5f;
-        boolean isSystemActive = true;
+        // New: Simulate a biometric scan
+        System.out.print("Fingerprint Verified? (true/false): ");
+        boolean fingerprintVerified = input.nextBoolean();
+
+        // LOGICAL OR (||): Access granted if PIN is correct OR Fingerprint is verified
+        boolean isAuthenticated = (pin == 1234) || fingerprintVerified;
+
+        if (!isAuthenticated) {
+            System.out.println("\n[ERROR]: AUTHENTICATION FAILED. TERMINATING SESSION.");
+            input.close();
+            return;                                                                             // Stop the program here
+        }
 
         // Output Personalized Report
         System.out.println("\n--- ACCESS GRANTED ---");
         System.out.println("Welcome, " + userName + "!");
-        System.out.println("Security PIN Verified: " + pin);
-        System.out .println("Active: " + isSystemActive);
+        System.out.println("Auth Method: " + ((pin == 1234) ? "PIN" : "BIOMETRIC"));    // Ternary hint for later!
 
         // --- SECTION 2: SYSTEM DIAGNOSTIC (Percentage Calculation) ---
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
@@ -52,17 +59,19 @@ public class Main {
         System.out.println("Overall System Health: " + healthPercentage + "%");
 
         // --- SECTION 4: OPERATION STATUS ---
-        // (Moved up to be available for global checks)
+        
         boolean isStable = healthPercentage > 70;
-        boolean isSecure = (pin == 1234) && isStable;
+
+        // LOGICAL AND (&&): Strict requirement for Uplink
+        // Must be Authenticated AND System must be Stable
+        boolean isSecure = isAuthenticated && isStable;
 
         System.out.println("System Stable: " + isStable);
-        System.out.println("System Secure: " + isSecure);
+        System.out.println("System Secure for Uplink: " + isSecure);
 
         // --- SECTION 11: COMMAND INTERFACE (Conditionals) ---
-        // This replaces the linear execution. The users now CHOOSES what to do.
-
-        input.nextLine();   // CONSUME THE LEFTOVER NEW LINE FROM nextInt() above!
+        
+        input.nextLine();   // CONSUME THE LEFTOVER NEWLINE
 
         System.out.println("\n==========================================");
         System.out.println("AVAILABLE MODULES:");
@@ -74,12 +83,9 @@ public class Main {
 
         String command = input.nextLine();
 
-        // THE BRANCHING PATH (If-Else-If Ladder)
         if (command.equalsIgnoreCase("PHYSICS")) {
             
-            // --- MOVED SECTION 5: PHYSICS ENGINE ---
             System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
-
             System.out.print("Enter Mass (kg): ");
             double mass = input.nextDouble();
             System.out.print("Enter Velocity (m/s): ");
@@ -95,23 +101,21 @@ public class Main {
 
         } else if (command.equalsIgnoreCase("ENCRYPT")) {
 
-            // --- MOVED SECTION 6: SECURE ENCRYPTION CHANNEL ---
             System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
-
             char originalRank = 'A';
             System.out.println("Original Mission Rank: " + originalRank);
-
             char encryptedRank = (char)(originalRank + 8);
             System.out.println("Encrypting data... Key: " + encryptedRank);
-
             char decryptedRank = (char)(originalRank - 8);
             System.out.println("Decrypting verification... " + decryptedRank);
 
         } else if (command.equalsIgnoreCase("UPLINK")) {
 
-            // --- MOVED SECTION 10: TRANSMISSION UPLINK ---
-            // Security Gate: Only allow Uplink if system is SECURE
-            if (isSecure) {
+            // LOGICAL NOT (!): Block access if NOT secure
+            if (!isSecure) {
+                System.out.println("\n[ERROR]: SECURITY LOCKDOWN. UPLINK DENIED.");
+                System.out.println("Reason: System instability detected.");
+            } else {
                 System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
 
                 System.out.print("Enter Mission Log Notes: ");
@@ -130,18 +134,12 @@ public class Main {
 
                 System.out.println("\n[UPLINKING MESSEGE...]");
                 System.out.println(finalTransmission);
-            } else {
-                // Nested Else for Security Failure
-                System.out.println("\n[ERROR]: SECURITY LOCKDOWN. UPLINK DENIED.");
-                System.out.println("Reason: System is unstable or PIN is invalid.");
             }
 
         } else {
-            // Default Else
             System.out.println("\n[ERROR]: UNKNOWN COMMAND. SYSTEM STANDBY.");
         }
 
-        // Close the scanner
         input.close();
     }
 }
