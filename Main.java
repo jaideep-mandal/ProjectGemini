@@ -1,4 +1,5 @@
 import java.util.Scanner;   // Import the Scanner class
+import java.util.Random;    // Import the Random class
 
 public class Main {
 
@@ -51,8 +52,6 @@ public class Main {
         float totalScore = energy + logic + memory + network + security;
         float healthPercentage = (totalScore / 500.0f) * 100;
 
-        // NEW: STRICT MODULE CHECK (Knowledge from Video 19 - Question 2)
-        // Just like a student needs 33% in EVERY Subject, our system needs > 30 in every module.
         boolean modulesInitialized = (energy > 30) && (logic > 30) && (memory > 30) && (network > 30) && (security > 30);
 
         System.out.println("\nDiagnostic Complete.");
@@ -60,9 +59,7 @@ public class Main {
         System.out.println("Individual Modules Initialized: " + modulesInitialized);
 
         // --- SECTION 4: OPERATION STATUS ---
-        // System is stable ONLY if Average > 70 AND no single module failed.
         boolean isStable = (healthPercentage > 70) && modulesInitialized;
-
         boolean isSecure = isAuthenticated && isStable;
 
         System.out.println("System Stable: " + isStable);
@@ -74,17 +71,17 @@ public class Main {
 
         System.out.println("\n==========================================");
         System.out.println("AVAILABLE MODULES:");
-        System.out.println("1. [PHYSICS] - Kinetic Energy & Displacement Calculator");
-        System.out.println("2. [ENCRYPT] - Secure Community Encoder");
-        System.out.println("3. [UPLINK]  - Mission Report Generator");
-        System.out.println("4. [SCAN]    - Network Security Scanner");                  // New Module
+        System.out.println("1. [PHYSICS]    - Kinetic Energy & Displacement Calculator");
+        System.out.println("2. [ENCRYPT]    - Secure Community Encoder");
+        System.out.println("3. [UPLINK]     - Mission Report Generator");
+        System.out.println("4. [SCAN]       - Network Security Scanner");
+        System.out.println("4. [SIMULATION] - Combat Tactics Drill (Rock-Paper-Scissors)");                 // New Module
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
 
         String commandRaw = input.nextLine();
         String command = commandRaw.toUpperCase();
 
-        // THE SWITCH STATEMENT
         switch (command) {
             case "PHYSICS":
                 System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
@@ -118,21 +115,18 @@ public class Main {
                     String cleanLog = missionLog.trim();
                     String safeLog = cleanLog.replace("danger", "[REDACTED]");
 
-                    // Simple console output for now
                     System.out.println("Log Processed: " + safeLog);
                     System.out.println("[UPLINK ESTABLISHED]");
                 }
                 break;
 
             case "SCAN":
-                // NEW MODULE: Knowledge from video 19 - Question 6
                 System.out.println("\n>> NETWORK SECURITY SCANNER INITIALIZED...");
                 System.out.print("Enter Target URL to scan: ");
                 String url = input.nextLine();
 
                 System.out.println("Analyzing: " + url);
 
-                // 1. Check Security Protocol (startsWith)
                 if (url.startsWith("https")) {
                     System.out.println("Protocol: SECURE (Hypertext transfer Protocol Secure)");
                 } else if (url.startsWith("http")) {
@@ -142,7 +136,6 @@ public class Main {
                     System.out.println("Protocol: UNKNOWN");
                 }
 
-                // 2. Check Domain Type (endsWith)
                 if (url.endsWith(".com")) {
                     System.out.println("Entity Type: Commercial");
                 } else if (url.endsWith(".org")) {
@@ -155,6 +148,31 @@ public class Main {
                     System.out.println("Entity Type: Standard Network Node");
                 }
                 break;
+
+            case "SIMULATION":
+                // NEW MODULE: Combat Drill using Random numbers
+                System.out.println("\n>> TACTICAL COMBAT SIMULATION INITIATED...");
+                System.out.println("Select Maneuver: 0 (Rock), 1 (Paper), 2 (Scissors)");
+                int userMove = input.nextInt();
+
+                if (userMove < 0 || userMove > 2) {
+                    System.out.println("[ERROR]: INVALID MANEUVER. SIMMULATION ABORTED.");
+                } else {
+                    Random rand = new Random();
+                    int computerMove = rand.nextInt(3); // Generates 0, 1, or 2
+
+                    System.out.println("System Maneuver: " + computerMove);
+
+                    if (userMove == computerMove) {
+                        System.out.println("RESULT: STALEMATE (Draw)");
+                    } else if (userMove == 0 && computerMove == 2 ||
+                                userMove == 1 && computerMove == 0 ||
+                                userMove == 2 && computerMove == 1 ) {
+                        System.out.println("RESULT: VICTORY - System Defeated");
+                    } else {
+                        System.out.println("RESULT: DEFEAT - System Prevails");
+                    }
+                }
 
             default:
                 System.out.println("\n[ERROR]: UNKNOWN COMMAND. SYSTEM STANDBY.");
