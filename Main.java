@@ -81,63 +81,67 @@ public class Main {
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
 
-        String command = input.nextLine();
+        String commandRaw = input.nextLine();
+        String command = commandRaw.toUpperCase();
 
-        if (command.equalsIgnoreCase("PHYSICS")) {
+        // THE SWITCH STATEMENT
+        switch (command) {
+            case "PHYSICS":
+                System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
+                System.out.print("Enter Mass (kg): ");
+                double mass = input.nextDouble();
+                System.out.print("Enter Velocity (m/s): ");
+                double velocity = input.nextDouble();
+
+                double kineticEnergy = 0.5 * mass * (velocity * velocity);
+                System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
+
+                double u = 0;
+                double a = 9.8;
+                double displacement = ((velocity * velocity) - (u * u)) / (2 * a);
+                System.out.printf("Theoretical Displacement to reach this velocity: %.2f meters\n" + displacement);
+                break;                                                                                                  // Don't forget break!
             
-            System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
-            System.out.print("Enter Mass (kg): ");
-            double mass = input.nextDouble();
-            System.out.print("Enter Velocity (m/s): ");
-            double velocity = input.nextDouble();
+            case "ENCRYPT":
+                System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
+                char originalRank = 'A';
+                System.out.println("Original Mission Rank: " + originalRank);
+                char encryptedRank = (char)(originalRank + 8);
+                System.out.println("Encrypting data... Key: " + encryptedRank);
+                char decryptedRank = (char)(originalRank - 8);
+                System.out.println("Decrypting verification... " + decryptedRank);
+                break;
 
-            double kineticEnergy = 0.5 * mass * (velocity * velocity);
-            System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
+            case "UPLINK":
+                if (!isSecure) {
+                    System.out.println("\n[ERROR]: SECURITY LOCKDOWN. UPLINK DENIED.");
+                    System.out.println("Reason: System instability detected.");
+                } else {
+                    System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
 
-            double u = 0;
-            double a = 9.8;
-            double displacement = ((velocity * velocity) - (u * u)) / (2 * a);
-            System.out.printf("Theoretical Displacement to reach this velocity: %.2f meters\n" + displacement);
+                    System.out.print("Enter Mission Log Notes: ");
+                    String missionLog = input.nextLine();
 
-        } else if (command.equalsIgnoreCase("ENCRYPT")) {
+                    String cleanLog = missionLog.trim();
+                    String safeLog = cleanLog.replace("danger", "[REDACTED]");
+                    String filename = userName.toLowerCase().replace(" ", "_") + "_log.txt";
 
-            System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
-            char originalRank = 'A';
-            System.out.println("Original Mission Rank: " + originalRank);
-            char encryptedRank = (char)(originalRank + 8);
-            System.out.println("Encrypting data... Key: " + encryptedRank);
-            char decryptedRank = (char)(originalRank - 8);
-            System.out.println("Decrypting verification... " + decryptedRank);
+                    System.out.println("Generating file: " + filename);
 
-        } else if (command.equalsIgnoreCase("UPLINK")) {
+                    String template = "To: HQ\nFrom: Commander <|name|>\nStatus: <|status|>\nMessege: <|log|>\nEnd Transmission.";
+                    String finalTransmission = template.replace("<|name|>", userName)
+                                                        .replace("<|status|>", (isStable ? "STABLE" : "UNSTABLE"))
+                                                        .replace("<|log|>", safeLog);
 
-            // LOGICAL NOT (!): Block access if NOT secure
-            if (!isSecure) {
-                System.out.println("\n[ERROR]: SECURITY LOCKDOWN. UPLINK DENIED.");
-                System.out.println("Reason: System instability detected.");
-            } else {
-                System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
+                    System.out.println("\n[UPLINKING MESSEGE...]");
+                    System.out.println(finalTransmission);
+                }
+                break;
 
-                System.out.print("Enter Mission Log Notes: ");
-                String missionLog = input.nextLine();
-
-                String cleanLog = missionLog.trim();
-                String safeLog = cleanLog.replace("danger", "[REDACTED]");
-                String filename = userName.toLowerCase().replace(" ", "_") + "_log.txt";
-
-                System.out.println("Generating file: " + filename);
-
-                String template = "To: HQ\nFrom: Commander <|name|>\nStatus: <|status|>\nMessege: <|log|>\nEnd Transmission.";
-                String finalTransmission = template.replace("<|name|>", userName)
-                                                    .replace("<|status|>", (isStable ? "STABLE" : "UNSTABLE"))
-                                                    .replace("<|log|>", safeLog);
-
-                System.out.println("\n[UPLINKING MESSEGE...]");
-                System.out.println(finalTransmission);
-            }
-
-        } else {
-            System.out.println("\n[ERROR]: UNKNOWN COMMAND. SYSTEM STANDBY.");
+            default:
+                // This handles any input that doesn't match a case
+                System.out.println("\n[ERROR]: UNKNOWN COMMAND. SYSTEM STANDBY.");
+                break;
         }
 
         input.close();
