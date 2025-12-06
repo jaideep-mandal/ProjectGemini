@@ -19,11 +19,9 @@ public class Main {
         System.out.print("Enter Security PIN: ");
         int pin = input.nextInt();                      
         
-        // New: Simulate a biometric scan
         System.out.print("Fingerprint Verified? (true/false): ");
         boolean fingerprintVerified = input.nextBoolean();
 
-        // LOGICAL OR (||): Access granted if PIN is correct OR Fingerprint is verified
         boolean isAuthenticated = (pin == 1234) || fingerprintVerified;
 
         if (!isAuthenticated) {
@@ -32,10 +30,8 @@ public class Main {
             return;                                                                             // Stop the program here
         }
 
-        // Output Personalized Report
         System.out.println("\n--- ACCESS GRANTED ---");
         System.out.println("Welcome, " + userName + "!");
-        System.out.println("Auth Method: " + ((pin == 1234) ? "PIN" : "BIOMETRIC"));    // Ternary hint for later!
 
         // --- SECTION 2: SYSTEM DIAGNOSTIC (Percentage Calculation) ---
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
@@ -55,15 +51,18 @@ public class Main {
         float totalScore = energy + logic + memory + network + security;
         float healthPercentage = (totalScore / 500.0f) * 100;
 
+        // NEW: STRICT MODULE CHECK (Knowledge from Video 19 - Question 2)
+        // Just like a student needs 33% in EVERY Subject, our system needs > 30 in every module.
+        boolean modulesInitialized = (energy > 30) && (logic > 30) && (memory > 30) && (network > 30) && (security > 30);
+
         System.out.println("\nDiagnostic Complete.");
         System.out.println("Overall System Health: " + healthPercentage + "%");
+        System.out.println("Individual Modules Initialized: " + modulesInitialized);
 
         // --- SECTION 4: OPERATION STATUS ---
-        
-        boolean isStable = healthPercentage > 70;
+        // System is stable ONLY if Average > 70 AND no single module failed.
+        boolean isStable = (healthPercentage > 70) && modulesInitialized;
 
-        // LOGICAL AND (&&): Strict requirement for Uplink
-        // Must be Authenticated AND System must be Stable
         boolean isSecure = isAuthenticated && isStable;
 
         System.out.println("System Stable: " + isStable);
@@ -78,6 +77,7 @@ public class Main {
         System.out.println("1. [PHYSICS] - Kinetic Energy & Displacement Calculator");
         System.out.println("2. [ENCRYPT] - Secure Community Encoder");
         System.out.println("3. [UPLINK]  - Mission Report Generator");
+        System.out.println("4. [SCAN]    - Network Security Scanner");                  // New Module
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -95,12 +95,7 @@ public class Main {
 
                 double kineticEnergy = 0.5 * mass * (velocity * velocity);
                 System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
-
-                double u = 0;
-                double a = 9.8;
-                double displacement = ((velocity * velocity) - (u * u)) / (2 * a);
-                System.out.printf("Theoretical Displacement to reach this velocity: %.2f meters\n" + displacement);
-                break;                                                                                                  // Don't forget break!
+                break;
             
             case "ENCRYPT":
                 System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
@@ -118,28 +113,50 @@ public class Main {
                     System.out.println("Reason: System instability detected.");
                 } else {
                     System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
-
                     System.out.print("Enter Mission Log Notes: ");
                     String missionLog = input.nextLine();
-
                     String cleanLog = missionLog.trim();
                     String safeLog = cleanLog.replace("danger", "[REDACTED]");
-                    String filename = userName.toLowerCase().replace(" ", "_") + "_log.txt";
 
-                    System.out.println("Generating file: " + filename);
+                    // Simple console output for now
+                    System.out.println("Log Processed: " + safeLog);
+                    System.out.println("[UPLINK ESTABLISHED]");
+                }
+                break;
 
-                    String template = "To: HQ\nFrom: Commander <|name|>\nStatus: <|status|>\nMessege: <|log|>\nEnd Transmission.";
-                    String finalTransmission = template.replace("<|name|>", userName)
-                                                        .replace("<|status|>", (isStable ? "STABLE" : "UNSTABLE"))
-                                                        .replace("<|log|>", safeLog);
+            case "SCAN":
+                // NEW MODULE: Knowledge from video 19 - Question 6
+                System.out.println("\n>> NETWORK SECURITY SCANNER INITIALIZED...");
+                System.out.print("Enter Target URL to scan: ");
+                String url = input.nextLine();
 
-                    System.out.println("\n[UPLINKING MESSEGE...]");
-                    System.out.println(finalTransmission);
+                System.out.println("Analyzing: " + url);
+
+                // 1. Check Security Protocol (startsWith)
+                if (url.startsWith("https")) {
+                    System.out.println("Protocol: SECURE (Hypertext transfer Protocol Secure)");
+                } else if (url.startsWith("http")) {
+                    System.out.println("Protocol: UNSECURE (Standard HTTP)");
+                    System.out.println("[WARNING]: Connection is not encrypted.");
+                } else {
+                    System.out.println("Protocol: UNKNOWN");
+                }
+
+                // 2. Check Domain Type (endsWith)
+                if (url.endsWith(".com")) {
+                    System.out.println("Entity Type: Commercial");
+                } else if (url.endsWith(".org")) {
+                    System.out.println("Entity Type: Organization");
+                } else if (url.endsWith(".gov")) {
+                    System.out.println("Entity Type: Government (High Priority)");
+                } else if (url.endsWith(".in")) {
+                    System.out.println("Entity Type: Regional (India)");
+                } else {
+                    System.out.println("Entity Type: Standard Network Node");
                 }
                 break;
 
             default:
-                // This handles any input that doesn't match a case
                 System.out.println("\n[ERROR]: UNKNOWN COMMAND. SYSTEM STANDBY.");
                 break;
         }
