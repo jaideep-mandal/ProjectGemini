@@ -56,7 +56,6 @@ public class Main {
 
         System.out.println("\nDiagnostic Complete.");
         System.out.println("Overall System Health: " + healthPercentage + "%");
-        System.out.println("Individual Modules Initialized: " + modulesInitialized);
 
         // --- SECTION 4: OPERATION STATUS ---
         boolean isStable = (healthPercentage > 70) && modulesInitialized;
@@ -69,115 +68,111 @@ public class Main {
         
         input.nextLine();   // CONSUME THE LEFTOVER NEWLINE
 
-        System.out.println("\n==========================================");
-        System.out.println("AVAILABLE MODULES:");
-        System.out.println("1. [PHYSICS]    - Kinetic Energy & Displacement Calculator");
-        System.out.println("2. [ENCRYPT]    - Secure Community Encoder");
-        System.out.println("3. [UPLINK]     - Mission Report Generator");
-        System.out.println("4. [SCAN]       - Network Security Scanner");
-        System.out.println("4. [SIMULATION] - Combat Tactics Drill (Rock-Paper-Scissors)");                 // New Module
-        System.out.println("\n==========================================");
-        System.out.println("ENTER COMMAND MODULE NAME: ");
+        // KNOWLEDGE POINT: The 'while' loop keeps the program alive indefinitely
+        while (true) {
+            System.out.println("\n==========================================");
+            System.out.println("AVAILABLE MODULES:");
+            System.out.println("1. [PHYSICS]    - Kinetic Energy Calculator");
+            System.out.println("2. [ENCRYPT]    - Secure Encoder");
+            System.out.println("3. [UPLINK]     - Mission Report");
+            System.out.println("4. [SCAN]       - Network Security Scanner");
+            System.out.println("4. [SIMULATION] - Combat Tactics Drill");
+            System.out.println("4. [EXIT]       - Shutdown System");            // New Option
+            System.out.println("\n==========================================");
+            System.out.println("ENTER COMMAND MODULE NAME: ");
 
-        String commandRaw = input.nextLine();
-        String command = commandRaw.toUpperCase();
+            String commandRaw = input.nextLine();
+            String command = commandRaw.toUpperCase();
 
-        switch (command) {
-            case "PHYSICS":
-                System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
-                System.out.print("Enter Mass (kg): ");
-                double mass = input.nextDouble();
-                System.out.print("Enter Velocity (m/s): ");
-                double velocity = input.nextDouble();
+            // Handle EXIT check first or inside switch
+            if (command.equals("EXIT")) {
+                System.out.println("SHUTTING DOWN SYSTEM... GOODBYE.");
+                break;                                                      // Breaks the loop and ends the program                                                      // Breaks the loop and ends the program
+            }
 
-                double kineticEnergy = 0.5 * mass * (velocity * velocity);
-                System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
-                break;
-            
-            case "ENCRYPT":
-                System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
-                char originalRank = 'A';
-                System.out.println("Original Mission Rank: " + originalRank);
-                char encryptedRank = (char)(originalRank + 8);
-                System.out.println("Encrypting data... Key: " + encryptedRank);
-                char decryptedRank = (char)(originalRank - 8);
-                System.out.println("Decrypting verification... " + decryptedRank);
-                break;
+            switch (command) {
+                case "PHYSICS":
+                    System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
+                    System.out.print("Enter Mass (kg): ");
+                    double mass = input.nextDouble();
+                    System.out.print("Enter Velocity (m/s): ");
+                    double velocity = input.nextDouble();
+                    input.nextLine();                                           // Fix Scanner Trap (eat newline)
 
-            case "UPLINK":
-                if (!isSecure) {
-                    System.out.println("\n[ERROR]: SECURITY LOCKDOWN. UPLINK DENIED.");
-                    System.out.println("Reason: System instability detected.");
-                } else {
-                    System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
-                    System.out.print("Enter Mission Log Notes: ");
-                    String missionLog = input.nextLine();
-                    String cleanLog = missionLog.trim();
-                    String safeLog = cleanLog.replace("danger", "[REDACTED]");
+                    double kineticEnergy = 0.5 * mass * (velocity * velocity);
+                    System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
+                    break;
+                
+                case "ENCRYPT":
+                    System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
+                    char originalRank = 'A';
+                    System.out.println("Original Mission Rank: " + originalRank);
+                    char encryptedRank = (char)(originalRank + 8);
+                    System.out.println("Encrypting data... Key: " + encryptedRank);
+                    char decryptedRank = (char)(originalRank - 8);
+                    System.out.println("Decrypting verification... " + decryptedRank);
+                    break;
 
-                    System.out.println("Log Processed: " + safeLog);
-                    System.out.println("[UPLINK ESTABLISHED]");
-                }
-                break;
-
-            case "SCAN":
-                System.out.println("\n>> NETWORK SECURITY SCANNER INITIALIZED...");
-                System.out.print("Enter Target URL to scan: ");
-                String url = input.nextLine();
-
-                System.out.println("Analyzing: " + url);
-
-                if (url.startsWith("https")) {
-                    System.out.println("Protocol: SECURE (Hypertext transfer Protocol Secure)");
-                } else if (url.startsWith("http")) {
-                    System.out.println("Protocol: UNSECURE (Standard HTTP)");
-                    System.out.println("[WARNING]: Connection is not encrypted.");
-                } else {
-                    System.out.println("Protocol: UNKNOWN");
-                }
-
-                if (url.endsWith(".com")) {
-                    System.out.println("Entity Type: Commercial");
-                } else if (url.endsWith(".org")) {
-                    System.out.println("Entity Type: Organization");
-                } else if (url.endsWith(".gov")) {
-                    System.out.println("Entity Type: Government (High Priority)");
-                } else if (url.endsWith(".in")) {
-                    System.out.println("Entity Type: Regional (India)");
-                } else {
-                    System.out.println("Entity Type: Standard Network Node");
-                }
-                break;
-
-            case "SIMULATION":
-                // NEW MODULE: Combat Drill using Random numbers
-                System.out.println("\n>> TACTICAL COMBAT SIMULATION INITIATED...");
-                System.out.println("Select Maneuver: 0 (Rock), 1 (Paper), 2 (Scissors)");
-                int userMove = input.nextInt();
-
-                if (userMove < 0 || userMove > 2) {
-                    System.out.println("[ERROR]: INVALID MANEUVER. SIMMULATION ABORTED.");
-                } else {
-                    Random rand = new Random();
-                    int computerMove = rand.nextInt(3); // Generates 0, 1, or 2
-
-                    System.out.println("System Maneuver: " + computerMove);
-
-                    if (userMove == computerMove) {
-                        System.out.println("RESULT: STALEMATE (Draw)");
-                    } else if (userMove == 0 && computerMove == 2 ||
-                                userMove == 1 && computerMove == 0 ||
-                                userMove == 2 && computerMove == 1 ) {
-                        System.out.println("RESULT: VICTORY - System Defeated");
+                case "UPLINK":
+                    if (!isSecure) {
+                        System.out.println("\n[ERROR]: SECURITY LOCKDOWN. UPLINK DENIED.");
+                        System.out.println("Reason: System instability detected.");
                     } else {
-                        System.out.println("RESULT: DEFEAT - System Prevails");
-                    }
-                }
+                        System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
+                        System.out.print("Enter Mission Log Notes: ");
+                        String missionLog = input.nextLine();
+                        String cleanLog = missionLog.trim();
+                        String safeLog = cleanLog.replace("danger", "[REDACTED]");
 
-            default:
-                System.out.println("\n[ERROR]: UNKNOWN COMMAND. SYSTEM STANDBY.");
-                break;
-        }
+                        System.out.println("Log Processed: " + safeLog);
+                        System.out.println("[UPLINK ESTABLISHED]");
+                    }
+                    break;
+
+                case "SCAN":
+                    System.out.println("\n>> NETWORK SECURITY SCANNER INITIALIZED...");
+                    System.out.print("Enter Target URL to scan: ");
+                    String url = input.nextLine();
+
+                    System.out.println("Analyzing: " + url);
+
+                    if (url.startsWith("https")) {
+                        System.out.println("Protocol: SECURE");
+                    } else {
+                        System.out.println("Protocol: UNSECURE");
+                    }
+                    break;
+
+                case "SIMULATION":
+                    System.out.println("\n>> TACTICAL COMBAT SIMULATION INITIATED...");
+                    System.out.println("Select Maneuver: 0 (Rock), 1 (Paper), 2 (Scissors)");
+                    int userMove = input.nextInt();
+                    input.nextLine();                                                           // Fix Scanner Trap (eat newline)
+
+                    if (userMove < 0 || userMove > 2) {
+                        System.out.println("[ERROR]: INVALID MANEUVER.");
+                    } else {
+                        Random rand = new Random();
+                        int computerMove = rand.nextInt(3);
+                        System.out.println("System Maneuver: " + computerMove);
+
+                        if (userMove == computerMove) {
+                            System.out.println("RESULT: STALEMATE");
+                        } else if (userMove == 0 && computerMove == 2 ||
+                                    userMove == 1 && computerMove == 0 ||
+                                    userMove == 2 && computerMove == 1 ) {
+                            System.out.println("RESULT: VICTORY");
+                        } else {
+                            System.out.println("RESULT: DEFEAT");
+                        }
+                    }
+                    break;
+
+                default:
+                    System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
+                    break;
+            }
+        }   // End of While Loop
 
         input.close();
     }
