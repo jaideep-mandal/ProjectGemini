@@ -76,15 +76,15 @@ public class Main {
             System.out.println("2. [ENCRYPT]    - Secure Encoder");
             System.out.println("3. [UPLINK]     - Mission Report");
             System.out.println("4. [SCAN]       - Network Security Scanner");
-            System.out.println("4. [SIMULATION] - Combat Tactics Drill");
-            System.out.println("4. [EXIT]       - Shutdown System");            // New Option
+            System.out.println("5. [SIMULATION] - Combat Tactics Drill");
+            System.out.println("6. [CALIBRATE]  - System Calibration (New)");
+            System.out.println("7. [EXIT]       - Shutdown System");            // New Option
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
             String commandRaw = input.nextLine();
             String command = commandRaw.toUpperCase();
 
-            // Handle EXIT check first or inside switch
             if (command.equals("EXIT")) {
                 System.out.println("SHUTTING DOWN SYSTEM... GOODBYE.");
                 break;                                                      // Breaks the loop and ends the program                                                      // Breaks the loop and ends the program
@@ -166,6 +166,34 @@ public class Main {
                             System.out.println("RESULT: DEFEAT");
                         }
                     }
+                    break;
+
+                case "CALIBRATE":
+                    // NEW MODULE: Use DO-WHILE Loop
+                    // Knowledge Point: Gurantees execution at least once
+                    System.out.println("\n>> SYSTEM CALIBRATION MODULE LOADED...");
+                    Random randCal = new Random();
+                    String retryChoice;
+
+                    do {
+                        System.out.println("[RUNNING DIAGNOSTICS...");
+                        int drift = randCal.nextInt(100);                       // 0 to 99
+                        System.out.println("Current System Drift: " + drift + "%");
+
+                        if (drift < 20) {
+                            System.out.println("Status: OPTIMAL ALIGNMENT.");
+                        } else if (drift < 50) {
+                            System.out.println("Status: MODERATE DEVIATION. Adjustment recommended.");
+                        } else {
+                            System.out.println("Status: CRITICAL MISALIGNMENT! Recalibration required.");
+                        }
+
+                        System.out.print("Run Calibration sequence again? (y/n): ");
+                        retryChoice = input.nextLine();
+
+                    } while (retryChoice.equalsIgnoreCase("y"));
+
+                    System.out.println("Calibration Sequence Ended.");
                     break;
 
                 default:
