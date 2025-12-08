@@ -71,15 +71,17 @@ public class Main {
         while (true) {
             System.out.println("\n==========================================");
             System.out.println("AVAILABLE MODULES:");
-            System.out.println("1. [PHYSICS]    - Kinetic Energy Calculator");
-            System.out.println("2. [ENCRYPT]    - Secure Encoder");
-            System.out.println("3. [UPLINK]     - Mission Report");
-            System.out.println("4. [SCAN]       - Network Security Scanner");
-            System.out.println("5. [SIMULATION] - Combat Tactics Drill");
-            System.out.println("6. [CALIBRATE]  - System Calibration");
-            System.out.println("7. [SYSCHECK]   - Power Cycle & Reboot");
-            System.out.println("8. [SEARCH]     - Deep Search Protocol (New)");
-            System.out.println("9. [EXIT]       - Shutdown System");            
+            System.out.println("1.  [PHYSICS]       - Kinetic Energy Calculator");
+            System.out.println("2.  [ENCRYPT]       - Secure Encoder");
+            System.out.println("3.  [UPLINK]        - Mission Report");
+            System.out.println("4.  [SCAN]          - Network Security Scanner");
+            System.out.println("5.  [SIMULATION]    - Combat Tactics Drill");
+            System.out.println("6.  [CALIBRATE]     - System Calibration");
+            System.out.println("7.  [SYSCHECK]      - Power Cycle & Reboot");
+            System.out.println("8.  [SEARCH]        - Deep Search Protocol");
+            System.out.println("9.  [MATRIX]        - Quantum Matrix Visualization (New)");
+            System.out.println("10. [RISK]          - Risk Permutation Engine (New)");
+            System.out.println("11. [EXIT]          - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -88,7 +90,7 @@ public class Main {
 
             if (command.equals("EXIT")) {
                 System.out.println("SHUTTING DOWN SYSTEM... GOODBYE.");
-                break;                                                      // Breaks the loop and ends the program                                                      // Breaks the loop and ends the program
+                break;                                                      // Breaks the loop and ends the program
             }
 
             switch (command) {
@@ -199,7 +201,6 @@ public class Main {
                     System.out.println("\n>> INITIATING POWER CYCLE...");
                     for (int i = 1; i <= 5; i++) {
                         System.out.println("Powering up Sector " + i + "...");
-                        // This little try-catch block pauses execution for 500ms (0.5 sec) to create an animation effect
                         try { Thread.sleep(500); } catch(InterruptedException e) { }
                     }
                     System.out.println("All Sectors ONLINE.");
@@ -213,7 +214,6 @@ public class Main {
                     break;
 
                 case "SEARCH":
-                    // NEW MODULE: Uses Break and Continue
                     System.out.println("\n>> DEEP SEARCH PROTOCOL INITIATED...");
                     System.out.print("Enter total checks to perform (e.g. 10): ");
                     int totalChecks = input.nextInt();
@@ -221,27 +221,57 @@ public class Main {
                     int skipId = input.nextInt();
                     System.out.print("Enter ID to STOP at (simulate target found): ");
                     int stopId = input.nextInt();
-                    input.nextLine();   // consume newline
+                    input.nextLine();
 
                     System.out.println("[SCANNING DATABASE...]");
                     for (int i = 1; i <= totalChecks; i++) {
-
-                        // CONTINUE Example: Skip the bad data
                         if (i == skipId) {
                             System.out.println("-> ID " + i + ": [CORRUPTED] - SKIPPING (Continue)");
-                            continue;   // Jump to the next iteration (i++)
+                            continue;
                         }
-
-                        // BREAK Example: Stop when target found
                         if (i == stopId) {
                             System.out.println("-> ID " + i + ": [TARGET FOUND] - STOPPING (Break)");
-                            break;  // Exits the loop entirely
+                            break;
                         }
-
-                        System.out.println("-> ID " + i + ": Analyzed - Secure.");
-                        try { Thread.sleep(200); } catch (InterruptedException e) { }
+                        System.out.println("-> ID " + i + ": Analyzed.");
                     }
-                    System.out.println("Search Protocol Complete.");
+                    break;
+
+                case "MATRIX":                    
+                    // NEW MODULE: NESTED LOOPS
+                    // Concept: Prints a 2D grid of coordinates using loop-inside-a-loop
+                    System.out.println("\n>> GENERATING QUANTUM MATRIX VISUALIZATION...");
+                    System.out.print("Enter Matrix Size (e.g. 5): ");
+                    int size = input.nextInt();
+                    input.nextLine();
+
+                    for (int i = 0; i < size; i++) {    // Outer Loop (Rows)
+                        for (int j = 0; j <= i; j++) {  // Inner Loop (Columns) - depends
+                            System.out.println("[" + i + "," + j + "]");
+                        }
+                        System.out.println();           // Newline after each row
+                    }
+                    System.out.println("Matrix Generation Complete.");
+                    break;
+
+                case "RISK":
+                    // NEW MODULE: FACTORIAL CALCULATION
+                    // Concept: Accumulating a value via multiplication
+                    System.out.println("\n>> CALCULATING RISK PERMUTATIONS...");
+                    System.out.print("Enter Risk Complexity Level (e.g. 5): ");
+                    int n = input.nextInt();
+                    input.nextLine();
+
+                    long permutations = 1;  // Must be 1, not 0 (because we are multiplying)
+                    int factorialCounter = 1;
+
+                    while (factorialCounter <= n) {
+                        permutations = permutations * factorialCounter;
+                        factorialCounter++;
+                    }
+
+                    System.out.println("Complexity Level: " + n);
+                    System.out.println("Total Possible Failure Senarious (Factorial): " + permutations);
                     break;
 
                 default:
