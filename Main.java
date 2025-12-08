@@ -77,8 +77,9 @@ public class Main {
             System.out.println("4. [SCAN]       - Network Security Scanner");
             System.out.println("5. [SIMULATION] - Combat Tactics Drill");
             System.out.println("6. [CALIBRATE]  - System Calibration");
-            System.out.println("7. [SYSCHECK]   - Power Cycle & Reboot (New)");
-            System.out.println("8. [EXIT]       - Shutdown System");            
+            System.out.println("7. [SYSCHECK]   - Power Cycle & Reboot");
+            System.out.println("8. [SEARCH]     - Deep Search Protocol (New)");
+            System.out.println("9. [EXIT]       - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -147,7 +148,7 @@ public class Main {
                     System.out.println("\n>> TACTICAL COMBAT SIMULATION INITIATED...");
                     System.out.println("Select Maneuver: 0 (Rock), 1 (Paper), 2 (Scissors)");
                     int userMove = input.nextInt();
-                    input.nextLine();                                                           // Fix Scanner Trap (eat newline)
+                    input.nextLine();   // Fix Scanner Trap
 
                     if (userMove < 0 || userMove > 2) {
                         System.out.println("[ERROR]: INVALID MANEUVER.");
@@ -195,10 +196,7 @@ public class Main {
                     break;
 
                 case "SYSCHECK":
-                    // NEW MODULE: User FOR Loops
                     System.out.println("\n>> INITIATING POWER CYCLE...");
-
-                    // 1. FORWARD LOOP (Increment)
                     for (int i = 1; i <= 5; i++) {
                         System.out.println("Powering up Sector " + i + "...");
                         // This little try-catch block pauses execution for 500ms (0.5 sec) to create an animation effect
@@ -207,13 +205,43 @@ public class Main {
                     System.out.println("All Sectors ONLINE.");
 
                     System.out.println("\n>> INITIATING REBOOT COUNTDOWN...");
-
-                    // 2. REVERSE LOOP (Decrement)
                     for (int i = 10; i > 0; i--) {
                         System.out.println("Reboot in " + i + "...");
                         try { Thread.sleep(500); } catch (InterruptedException e) { }
                     }
                     System.out.println("REBOOT COMPLETE. SYSTEM FRESH.");
+                    break;
+
+                case "SEARCH":
+                    // NEW MODULE: Uses Break and Continue
+                    System.out.println("\n>> DEEP SEARCH PROTOCOL INITIATED...");
+                    System.out.print("Enter total checks to perform (e.g. 10): ");
+                    int totalChecks = input.nextInt();
+                    System.out.print("Enter ID to SKIP (simulate corruption): ");
+                    int skipId = input.nextInt();
+                    System.out.print("Enter ID to STOP at (simulate target found): ");
+                    int stopId = input.nextInt();
+                    input.nextLine();   // consume newline
+
+                    System.out.println("[SCANNING DATABASE...]");
+                    for (int i = 1; i <= totalChecks; i++) {
+
+                        // CONTINUE Example: Skip the bad data
+                        if (i == skipId) {
+                            System.out.println("-> ID " + i + ": [CORRUPTED] - SKIPPING (Continue)");
+                            continue;   // Jump to the next iteration (i++)
+                        }
+
+                        // BREAK Example: Stop when target found
+                        if (i == stopId) {
+                            System.out.println("-> ID " + i + ": [TARGET FOUND] - STOPPING (Break)");
+                            break;  // Exits the loop entirely
+                        }
+
+                        System.out.println("-> ID " + i + ": Analyzed - Secure.");
+                        try { Thread.sleep(200); } catch (InterruptedException e) { }
+                    }
+                    System.out.println("Search Protocol Complete.");
                     break;
 
                 default:
