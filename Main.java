@@ -68,7 +68,6 @@ public class Main {
         
         input.nextLine();   // CONSUME THE LEFTOVER NEWLINE
 
-        // KNOWLEDGE POINT: The 'while' loop keeps the program alive indefinitely
         while (true) {
             System.out.println("\n==========================================");
             System.out.println("AVAILABLE MODULES:");
@@ -77,8 +76,9 @@ public class Main {
             System.out.println("3. [UPLINK]     - Mission Report");
             System.out.println("4. [SCAN]       - Network Security Scanner");
             System.out.println("5. [SIMULATION] - Combat Tactics Drill");
-            System.out.println("6. [CALIBRATE]  - System Calibration (New)");
-            System.out.println("7. [EXIT]       - Shutdown System");            // New Option
+            System.out.println("6. [CALIBRATE]  - System Calibration");
+            System.out.println("7. [SYSCHECK]   - Power Cycle & Reboot (New)");
+            System.out.println("8. [EXIT]       - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -169,8 +169,6 @@ public class Main {
                     break;
 
                 case "CALIBRATE":
-                    // NEW MODULE: Use DO-WHILE Loop
-                    // Knowledge Point: Gurantees execution at least once
                     System.out.println("\n>> SYSTEM CALIBRATION MODULE LOADED...");
                     Random randCal = new Random();
                     String retryChoice;
@@ -194,6 +192,28 @@ public class Main {
                     } while (retryChoice.equalsIgnoreCase("y"));
 
                     System.out.println("Calibration Sequence Ended.");
+                    break;
+
+                case "SYSCHECK":
+                    // NEW MODULE: User FOR Loops
+                    System.out.println("\n>> INITIATING POWER CYCLE...");
+
+                    // 1. FORWARD LOOP (Increment)
+                    for (int i = 1; i <= 5; i++) {
+                        System.out.println("Powering up Sector " + i + "...");
+                        // This little try-catch block pauses execution for 500ms (0.5 sec) to create an animation effect
+                        try { Thread.sleep(500); } catch(InterruptedException e) { }
+                    }
+                    System.out.println("All Sectors ONLINE.");
+
+                    System.out.println("\n>> INITIATING REBOOT COUNTDOWN...");
+
+                    // 2. REVERSE LOOP (Decrement)
+                    for (int i = 10; i > 0; i--) {
+                        System.out.println("Reboot in " + i + "...");
+                        try { Thread.sleep(500); } catch (InterruptedException e) { }
+                    }
+                    System.out.println("REBOOT COMPLETE. SYSTEM FRESH.");
                     break;
 
                 default:
