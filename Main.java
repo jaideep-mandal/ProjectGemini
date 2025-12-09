@@ -13,7 +13,7 @@ public class Main {
 
         System.out.println("Starting Project: ProjectGemini");
 
-        // --- SECTION 1: USER LOGIN ---
+        // --- SECTION 1: USER LOGIN (Runs Once) ---
         System.out.print("Enter User Name: ");
         String userName = input.nextLine();         
 
@@ -34,7 +34,7 @@ public class Main {
         System.out.println("\n--- ACCESS GRANTED ---");
         System.out.println("Welcome, " + userName + "!");
 
-        // --- SECTION 2: SYSTEM DIAGNOSTIC (Percentage Calculation) ---
+        // --- SECTION 2: SYSTEM DIAGNOSTIC (Runs Once) ---
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
         System.out.println("Please enter status (0-100) for the following modules:");
 
@@ -64,7 +64,7 @@ public class Main {
         System.out.println("System Stable: " + isStable);
         System.out.println("System Secure for Uplink: " + isSecure);
 
-        // --- SECTION 11: COMMAND INTERFACE (Conditionals) ---
+        // --- SECTION 11: COMMAND INTERFACE (The Infinite Loop) ---
         
         input.nextLine();   // CONSUME THE LEFTOVER NEWLINE
 
@@ -82,7 +82,8 @@ public class Main {
             System.out.println("9.  [MATRIX]        - Quantum Matrix Visualization");
             System.out.println("10. [RISK]          - Risk Permutation Engine");
             System.out.println("11. [SUPPLY]        - Supply Inventory (New)");
-            System.out.println("12. [EXIT]          - Shutdown System");            
+            System.out.println("12. [ANALYZE]       - Supply Inventory (New)");
+            System.out.println("13. [EXIT]          - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -158,8 +159,6 @@ public class Main {
                     } else {
                         Random rand = new Random();
                         int computerMove = rand.nextInt(3);
-                        System.out.println("System Maneuver: " + computerMove);
-
                         if (userMove == computerMove) {
                             System.out.println("RESULT: STALEMATE");
                         } else if (userMove == 0 && computerMove == 2 ||
@@ -200,7 +199,6 @@ public class Main {
                         System.out.println("Reboot in " + i + "...");
                         try { Thread.sleep(500); } catch (InterruptedException e) { }
                     }
-                    System.out.println("REBOOT COMPLETE. SYSTEM FRESH.");
                     break;
 
                 case "SEARCH":
@@ -258,25 +256,19 @@ public class Main {
                     break;
 
                 case "SUPPLY":
-                    // NEW MODULE: ARRAYS
                     System.out.println("\n>> ACCESSING SUPPLY INVENTORY...");
-
-                    // 1. Declare and Initialize Arrays (Parallel Arrays)
                     String[] supplyItems = {"Quantum Batteries", "Laser Emitters", "Nutrients Packs", "Medi-Gel", "Dark Matter Fuel"};
                     int[] supplyCounts = {15, 4, 120, 10, 2};
 
-                    // 2. Display Full Inventory using a loop
                     System.out.println("--- CURRENT STOCK ---");
-                    // We use supplyItems.length so we don't have to hardcode "5"
                     for (int i = 0; i < supplyItems.length; i++) {
                         System.out.println("Locker [" + i + "]" + supplyItems[i] + "(Qty: " + supplyCounts[i] + ")");
                     }
 
-                    // 3. Access Specific Element by Index
                     System.out.println("\n>> QUICK RETRIEVAL SYSTEM");
                     System.out.print("Enter Locker Number (0-4) to inspect: ");
                     int index = input.nextInt();
-                    input.nextLine();   //Fix Scanner Trap
+                    input.nextLine();
 
                     if (index >= 0 && index < supplyItems.length) {
                         System.out.println("Retrieved: " + supplyItems[index]);
@@ -284,6 +276,38 @@ public class Main {
                     } else {
                         System.out.println("[ERROR]: INVALID LOCKER INDEX.");
                     }
+                    break;
+
+                case "ANALYZE":
+                    //NEW MODULE: FOR-EACH LOOP
+                    System.out.println("\n>> INCOMING DATA STREAM DETECTED...");
+
+                    // 1. Simulate a stream of signal strength values
+                    double[] signalValues = {10.5, 45.2, 98.1, 12.0, 67.5, 33.3};
+                    double sum = 0;
+                    double maxSignal = 0;
+
+                    // 2. Use For-Each to process every signal
+                    System.out.println("[PROCESSING SIGNALS...]");
+                    for (double signal : signalValues) {
+                        System.out.println("Reading Signal: " + signal + " Hz");
+
+                        // Accumulate for Average
+                        sum += signal;
+
+                        // Find Max
+                        if (signal > maxSignal) {
+                            maxSignal = signal;
+                        }
+
+                        try { Thread.sleep(150); } catch (InterruptedException e) { }
+                    }
+                    double average = sum / signalValues.length;
+
+                    System.out.println("\n>> SIGNAL ANALYSIS REPORT <<");
+                    System.out.println("Total Signal Processed: " + signalValues.length);
+                    System.out.printf("Average Frequency: %.2f Hz\n", average);
+                    System.out.println("Peak Signal Detected: " + maxSignal + " Hz");
                     break;
 
                 default:
