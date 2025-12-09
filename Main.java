@@ -79,9 +79,10 @@ public class Main {
             System.out.println("6.  [CALIBRATE]     - System Calibration");
             System.out.println("7.  [SYSCHECK]      - Power Cycle & Reboot");
             System.out.println("8.  [SEARCH]        - Deep Search Protocol");
-            System.out.println("9.  [MATRIX]        - Quantum Matrix Visualization (New)");
-            System.out.println("10. [RISK]          - Risk Permutation Engine (New)");
-            System.out.println("11. [EXIT]          - Shutdown System");            
+            System.out.println("9.  [MATRIX]        - Quantum Matrix Visualization");
+            System.out.println("10. [RISK]          - Risk Permutation Engine");
+            System.out.println("11. [SUPPLY]        - Supply Inventory (New)");
+            System.out.println("12. [EXIT]          - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -100,7 +101,7 @@ public class Main {
                     double mass = input.nextDouble();
                     System.out.print("Enter Velocity (m/s): ");
                     double velocity = input.nextDouble();
-                    input.nextLine();                                           // Fix Scanner Trap (eat newline)
+                    input.nextLine();   // Fix Scanner Trap
 
                     double kineticEnergy = 0.5 * mass * (velocity * velocity);
                     System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
@@ -178,20 +179,10 @@ public class Main {
 
                     do {
                         System.out.println("[RUNNING DIAGNOSTICS...");
-                        int drift = randCal.nextInt(100);                       // 0 to 99
+                        int drift = randCal.nextInt(100);                       
                         System.out.println("Current System Drift: " + drift + "%");
-
-                        if (drift < 20) {
-                            System.out.println("Status: OPTIMAL ALIGNMENT.");
-                        } else if (drift < 50) {
-                            System.out.println("Status: MODERATE DEVIATION. Adjustment recommended.");
-                        } else {
-                            System.out.println("Status: CRITICAL MISALIGNMENT! Recalibration required.");
-                        }
-
                         System.out.print("Run Calibration sequence again? (y/n): ");
                         retryChoice = input.nextLine();
-
                     } while (retryChoice.equalsIgnoreCase("y"));
 
                     System.out.println("Calibration Sequence Ended.");
@@ -204,7 +195,6 @@ public class Main {
                         try { Thread.sleep(500); } catch(InterruptedException e) { }
                     }
                     System.out.println("All Sectors ONLINE.");
-
                     System.out.println("\n>> INITIATING REBOOT COUNTDOWN...");
                     for (int i = 10; i > 0; i--) {
                         System.out.println("Reboot in " + i + "...");
@@ -217,13 +207,12 @@ public class Main {
                     System.out.println("\n>> DEEP SEARCH PROTOCOL INITIATED...");
                     System.out.print("Enter total checks to perform (e.g. 10): ");
                     int totalChecks = input.nextInt();
-                    System.out.print("Enter ID to SKIP (simulate corruption): ");
+                    System.out.print("Enter ID to SKIP: ");
                     int skipId = input.nextInt();
-                    System.out.print("Enter ID to STOP at (simulate target found): ");
+                    System.out.print("Enter ID to STOP: ");
                     int stopId = input.nextInt();
                     input.nextLine();
 
-                    System.out.println("[SCANNING DATABASE...]");
                     for (int i = 1; i <= totalChecks; i++) {
                         if (i == skipId) {
                             System.out.println("-> ID " + i + ": [CORRUPTED] - SKIPPING (Continue)");
@@ -237,41 +226,64 @@ public class Main {
                     }
                     break;
 
-                case "MATRIX":                    
-                    // NEW MODULE: NESTED LOOPS
-                    // Concept: Prints a 2D grid of coordinates using loop-inside-a-loop
+                case "MATRIX":
                     System.out.println("\n>> GENERATING QUANTUM MATRIX VISUALIZATION...");
                     System.out.print("Enter Matrix Size (e.g. 5): ");
                     int size = input.nextInt();
                     input.nextLine();
 
-                    for (int i = 0; i < size; i++) {    // Outer Loop (Rows)
-                        for (int j = 0; j <= i; j++) {  // Inner Loop (Columns) - depends
+                    for (int i = 0; i < size; i++) {    
+                        for (int j = 0; j <= i; j++) {  
                             System.out.println("[" + i + "," + j + "]");
                         }
-                        System.out.println();           // Newline after each row
+                        System.out.println();           
                     }
                     System.out.println("Matrix Generation Complete.");
                     break;
 
                 case "RISK":
-                    // NEW MODULE: FACTORIAL CALCULATION
-                    // Concept: Accumulating a value via multiplication
                     System.out.println("\n>> CALCULATING RISK PERMUTATIONS...");
                     System.out.print("Enter Risk Complexity Level (e.g. 5): ");
                     int n = input.nextInt();
                     input.nextLine();
 
-                    long permutations = 1;  // Must be 1, not 0 (because we are multiplying)
+                    long permutations = 1;  
                     int factorialCounter = 1;
 
                     while (factorialCounter <= n) {
                         permutations = permutations * factorialCounter;
                         factorialCounter++;
                     }
+                    System.out.println("Total Possible Failure Senarious: " + permutations);
+                    break;
 
-                    System.out.println("Complexity Level: " + n);
-                    System.out.println("Total Possible Failure Senarious (Factorial): " + permutations);
+                case "SUPPLY":
+                    // NEW MODULE: ARRAYS
+                    System.out.println("\n>> ACCESSING SUPPLY INVENTORY...");
+
+                    // 1. Declare and Initialize Arrays (Parallel Arrays)
+                    String[] supplyItems = {"Quantum Batteries", "Laser Emitters", "Nutrients Packs", "Medi-Gel", "Dark Matter Fuel"};
+                    int[] supplyCounts = {15, 4, 120, 10, 2};
+
+                    // 2. Display Full Inventory using a loop
+                    System.out.println("--- CURRENT STOCK ---");
+                    // We use supplyItems.length so we don't have to hardcode "5"
+                    for (int i = 0; i < supplyItems.length; i++) {
+                        System.out.println("Locker [" + i + "]" + supplyItems[i] + "(Qty: " + supplyCounts[i] + ")");
+                    }
+
+                    // 3. Access Specific Element by Index
+                    System.out.println("\n>> QUICK RETRIEVAL SYSTEM");
+                    System.out.print("Enter Locker Number (0-4) to inspect: ");
+                    int index = input.nextInt();
+                    input.nextLine();   //Fix Scanner Trap
+
+                    if (index >= 0 && index < supplyItems.length) {
+                        System.out.println("Retrieved: " + supplyItems[index]);
+                        System.out.println("Quantity Available: " + supplyCounts[index]);
+                    } else {
+                        System.out.println("[ERROR]: INVALID LOCKER INDEX.");
+                    }
                     break;
 
                 default:
