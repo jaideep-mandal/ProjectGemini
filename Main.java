@@ -81,9 +81,10 @@ public class Main {
             System.out.println("8.  [SEARCH]        - Deep Search Protocol");
             System.out.println("9.  [MATRIX]        - Quantum Matrix Visualization");
             System.out.println("10. [RISK]          - Risk Permutation Engine");
-            System.out.println("11. [SUPPLY]        - Supply Inventory (New)");
-            System.out.println("12. [ANALYZE]       - Supply Inventory (New)");
-            System.out.println("13. [EXIT]          - Shutdown System");            
+            System.out.println("11. [SUPPLY]        - Supply Inventory");
+            System.out.println("12. [ANALYZE]       - Supply Inventory");
+            System.out.println("13. [MAP]           - Sector Navigation Map (New)");
+            System.out.println("14. [EXIT]          - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -92,7 +93,7 @@ public class Main {
 
             if (command.equals("EXIT")) {
                 System.out.println("SHUTTING DOWN SYSTEM... GOODBYE.");
-                break;                                                      // Breaks the loop and ends the program
+                break;
             }
 
             switch (command) {
@@ -138,8 +139,6 @@ public class Main {
                     System.out.println("\n>> NETWORK SECURITY SCANNER INITIALIZED...");
                     System.out.print("Enter Target URL to scan: ");
                     String url = input.nextLine();
-
-                    System.out.println("Analyzing: " + url);
 
                     if (url.startsWith("https")) {
                         System.out.println("Protocol: SECURE");
@@ -232,7 +231,7 @@ public class Main {
 
                     for (int i = 0; i < size; i++) {    
                         for (int j = 0; j <= i; j++) {  
-                            System.out.println("[" + i + "," + j + "]");
+                            System.out.print("[" + i + "," + j + "]");
                         }
                         System.out.println();           
                     }
@@ -279,35 +278,85 @@ public class Main {
                     break;
 
                 case "ANALYZE":
-                    //NEW MODULE: FOR-EACH LOOP
                     System.out.println("\n>> INCOMING DATA STREAM DETECTED...");
-
-                    // 1. Simulate a stream of signal strength values
                     double[] signalValues = {10.5, 45.2, 98.1, 12.0, 67.5, 33.3};
                     double sum = 0;
                     double maxSignal = 0;
 
-                    // 2. Use For-Each to process every signal
                     System.out.println("[PROCESSING SIGNALS...]");
                     for (double signal : signalValues) {
                         System.out.println("Reading Signal: " + signal + " Hz");
-
-                        // Accumulate for Average
                         sum += signal;
-
-                        // Find Max
                         if (signal > maxSignal) {
                             maxSignal = signal;
                         }
-
                         try { Thread.sleep(150); } catch (InterruptedException e) { }
                     }
                     double average = sum / signalValues.length;
-
                     System.out.println("\n>> SIGNAL ANALYSIS REPORT <<");
-                    System.out.println("Total Signal Processed: " + signalValues.length);
                     System.out.printf("Average Frequency: %.2f Hz\n", average);
                     System.out.println("Peak Signal Detected: " + maxSignal + " Hz");
+                    break;
+
+                case "MAP":
+                    // NEW MODULE: MULTIDIMENSIONAL ARRAYS
+                    System.out.println("\n>> LOADING SECTOR MAP (3x3)...");
+
+                    // 1. Declare 2D Array
+                    char[][] sectorMap = new char[3][3];
+
+                    // 2. Initialize Map (Empty Space)
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            sectorMap[i][j] = '.';
+                        }
+                    }
+
+                    // 3. Place Objects
+                    int playerRow = 0;
+                    int playerCol = 0;
+                    sectorMap[playerRow][playerCol] = 'P';  // Player Ship
+                    sectorMap[1][2] = '*';                  // Anormaly/Star
+
+                    // 4. Interaction Loop (Mini-Game)
+                    while (true) {
+                        // Display Map
+                        System.out.println("\n--- SECTOR GRID ---");
+                        for (int i = 0; i < 3; i++) {
+                            for (int j = 0; j < 3; j++) {
+                                System.out.println(sectorMap[i][j] + " ");
+                            }
+                            System.out.println();
+                        }
+                    
+
+                        System.out.println("Current Coords: [" + playerRow + "," + playerCol + "]");
+                        System.out.println("Enter new Row (0-2) or 9 to Exit Map: ");
+                        int newRow = input.nextInt();
+                        if (newRow == 9) break; // Exit Map Mode
+
+                        System.out.println("Enter new Col(0-2): ");
+                        int newCol = input.nextInt();
+                        input.nextLine();   // Fix Scanner Trap
+
+                        // Bounds Check (Safety)
+                        if (newRow >= 0 && newRow < 3 && newCol >= 0 && newCol < 3) {
+                            // Update Map
+                            sectorMap[playerRow][playerCol] = '.';  // Clear old spot
+                            playerRow = newRow;
+                            playerCol = newCol;
+
+                            // Check collision
+                            if (sectorMap[playerRow][playerCol] == '*') {
+                                System.out.println("[ALLERT]: ANOMALY DISCOVERED!");
+                            }
+
+                            sectorMap[playerRow][playerCol] = 'P';  // set new spot
+                        } else {
+                            System.out.println("[ERROR]: COORDINATES OUT OF RANGE. WARP FAILED");
+                        }
+                    }
+                    System.out.println("Exiting Navigation Map...");
                     break;
 
                 default:
