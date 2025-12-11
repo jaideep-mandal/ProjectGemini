@@ -83,8 +83,9 @@ public class Main {
             System.out.println("10. [RISK]          - Risk Permutation Engine");
             System.out.println("11. [SUPPLY]        - Supply Inventory");
             System.out.println("12. [ANALYZE]       - Supply Inventory");
-            System.out.println("13. [MAP]           - Sector Navigation Map (New)");
-            System.out.println("14. [EXIT]          - Shutdown System");            
+            System.out.println("13. [MAP]           - Sector Navigation Map");
+            System.out.println("14. [INTEGRITY]     - System Integrity & Data Restoration (New)");
+            System.out.println("15. [EXIT]          - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -299,28 +300,19 @@ public class Main {
                     break;
 
                 case "MAP":
-                    // NEW MODULE: MULTIDIMENSIONAL ARRAYS
                     System.out.println("\n>> LOADING SECTOR MAP (3x3)...");
-
-                    // 1. Declare 2D Array
                     char[][] sectorMap = new char[3][3];
-
-                    // 2. Initialize Map (Empty Space)
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {
                             sectorMap[i][j] = '.';
                         }
                     }
-
-                    // 3. Place Objects
                     int playerRow = 0;
                     int playerCol = 0;
-                    sectorMap[playerRow][playerCol] = 'P';  // Player Ship
-                    sectorMap[1][2] = '*';                  // Anormaly/Star
+                    sectorMap[playerRow][playerCol] = 'P';
+                    sectorMap[1][2] = '*';
 
-                    // 4. Interaction Loop (Mini-Game)
                     while (true) {
-                        // Display Map
                         System.out.println("\n--- SECTOR GRID ---");
                         for (int i = 0; i < 3; i++) {
                             for (int j = 0; j < 3; j++) {
@@ -328,35 +320,69 @@ public class Main {
                             }
                             System.out.println();
                         }
-                    
-
                         System.out.println("Current Coords: [" + playerRow + "," + playerCol + "]");
                         System.out.println("Enter new Row (0-2) or 9 to Exit Map: ");
                         int newRow = input.nextInt();
-                        if (newRow == 9) break; // Exit Map Mode
+                        if (newRow == 9) break;
 
                         System.out.println("Enter new Col(0-2): ");
                         int newCol = input.nextInt();
-                        input.nextLine();   // Fix Scanner Trap
+                        input.nextLine();
 
-                        // Bounds Check (Safety)
                         if (newRow >= 0 && newRow < 3 && newCol >= 0 && newCol < 3) {
-                            // Update Map
                             sectorMap[playerRow][playerCol] = '.';  // Clear old spot
                             playerRow = newRow;
                             playerCol = newCol;
-
-                            // Check collision
                             if (sectorMap[playerRow][playerCol] == '*') {
                                 System.out.println("[ALLERT]: ANOMALY DISCOVERED!");
                             }
-
                             sectorMap[playerRow][playerCol] = 'P';  // set new spot
                         } else {
                             System.out.println("[ERROR]: COORDINATES OUT OF RANGE. WARP FAILED");
                         }
                     }
                     System.out.println("Exiting Navigation Map...");
+                    break;
+
+                case "INTEGRITY":
+                    // NEW MODULE: ARRAY PRACTICE CONCEPTS
+                    System.out.println("\n>> ACCESSING BLACK BOX DATA RECORDER...");
+
+                    // 1. Setup Data (Corrupted/Reversed Order)
+                    int[] dataLog = {50, 42, 999, 12, 5, 2};
+                    System.out.print("Raw Data Log (Corrupted): ");
+                    for (int val : dataLog) System.out.println(val + " ");
+                    System.out.println();
+
+                    // 2. REVERSING ARRAY LOGIC (To Restore Order)
+                    // Logic: Swap first with last, second with second-to-last, etc.
+                    int len = dataLog.length;
+                    int halfLen = Math.floorDiv(len, 2);    // Integer division
+
+                    for (int i = 0; i < halfLen; i++) {
+                        int temp = dataLog[i];              // Store first
+                        dataLog[i] = dataLog[len - 1 - i];  // Move last to first
+                        dataLog[len - 1 - i] = temp;        // Move stored first to last
+                    }
+
+                    System.out.println("Restored Log (Reversed): ");
+                    for (int val : dataLog) System.out.println(val + " ");
+                    System.out.println();
+
+                    // 3. MAX/MIN LOGIC (Timeline Verification)
+                    boolean isSorted = true;
+                    for (int i = 0; i < dataLog.length; i++) {
+                        if (dataLog[i] > dataLog[i+1]) {    // If current is greater than next, it's NOT sorted
+                            isSorted = false;
+                            break;
+                        }
+                    }
+
+                    if (isSorted) {
+                        System.out.println("timeline Integrity: VERIFIED (Chronological Order");
+                    } else {
+                        System.out.println("timeline Integrity: ERROR (Timestamps out of sync)");
+                    }
                     break;
 
                 default:
