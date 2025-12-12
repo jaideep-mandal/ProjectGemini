@@ -3,14 +3,25 @@ import java.util.Random;    // Import the Random class
 
 public class Main {
 
+    // KNOWLEDGE POINT: ANSI Color Codes for Console Customization
+    public static final String RESET = "\u001B[0m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String BLUE = "\u001B[34m";
+    public static final String YELLOW = "\u001B[33m";
+    public static final String PURPLE = "\u001B[35m";
+    public static final String CYAN = "\u001B[36m";
+
     public static void main(String[] args){
         bootSystem();
     }
 
     public static void bootSystem() {
-        // 1. Setup Input Scanner
         Scanner input = new Scanner(System.in);
+        String currentTheme = RESET;    // Default Theme
 
+        // Apply Theme immediately
+        System.out.print(currentTheme);
         System.out.println("Starting Project: ProjectGemini");
 
         // --- SECTION 1: USER LOGIN (Runs Once) ---
@@ -69,6 +80,9 @@ public class Main {
         input.nextLine();   // CONSUME THE LEFTOVER NEWLINE
 
         while (true) {
+            // Apply current theme at the start of every loop iteration
+            System.out.println(currentTheme);
+
             System.out.println("\n==========================================");
             System.out.println("AVAILABLE MODULES:");
             System.out.println("1.  [PHYSICS]       - Kinetic Energy Calculator");
@@ -84,8 +98,9 @@ public class Main {
             System.out.println("11. [SUPPLY]        - Supply Inventory");
             System.out.println("12. [ANALYZE]       - Supply Inventory");
             System.out.println("13. [MAP]           - Sector Navigation Map");
-            System.out.println("14. [INTEGRITY]     - System Integrity & Data Restoration (New)");
-            System.out.println("15. [EXIT]          - Shutdown System");            
+            System.out.println("14. [INTEGRITY]     - System Integrity & Data Restoration");
+            System.out.println("15. [THEME]         - Interface Visual Customization (New)");
+            System.out.println("16. [EXIT]          - Shutdown System");            
             System.out.println("\n==========================================");
             System.out.println("ENTER COMMAND MODULE NAME: ");
 
@@ -104,7 +119,7 @@ public class Main {
                     double mass = input.nextDouble();
                     System.out.print("Enter Velocity (m/s): ");
                     double velocity = input.nextDouble();
-                    input.nextLine();   // Fix Scanner Trap
+                    input.nextLine();
 
                     double kineticEnergy = 0.5 * mass * (velocity * velocity);
                     System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
@@ -130,7 +145,6 @@ public class Main {
                         String missionLog = input.nextLine();
                         String cleanLog = missionLog.trim();
                         String safeLog = cleanLog.replace("danger", "[REDACTED]");
-
                         System.out.println("Log Processed: " + safeLog);
                         System.out.println("[UPLINK ESTABLISHED]");
                     }
@@ -140,7 +154,6 @@ public class Main {
                     System.out.println("\n>> NETWORK SECURITY SCANNER INITIALIZED...");
                     System.out.print("Enter Target URL to scan: ");
                     String url = input.nextLine();
-
                     if (url.startsWith("https")) {
                         System.out.println("Protocol: SECURE");
                     } else {
@@ -175,7 +188,6 @@ public class Main {
                     System.out.println("\n>> SYSTEM CALIBRATION MODULE LOADED...");
                     Random randCal = new Random();
                     String retryChoice;
-
                     do {
                         System.out.println("[RUNNING DIAGNOSTICS...");
                         int drift = randCal.nextInt(100);                       
@@ -183,7 +195,6 @@ public class Main {
                         System.out.print("Run Calibration sequence again? (y/n): ");
                         retryChoice = input.nextLine();
                     } while (retryChoice.equalsIgnoreCase("y"));
-
                     System.out.println("Calibration Sequence Ended.");
                     break;
 
@@ -229,7 +240,6 @@ public class Main {
                     System.out.print("Enter Matrix Size (e.g. 5): ");
                     int size = input.nextInt();
                     input.nextLine();
-
                     for (int i = 0; i < size; i++) {    
                         for (int j = 0; j <= i; j++) {  
                             System.out.print("[" + i + "," + j + "]");
@@ -244,10 +254,8 @@ public class Main {
                     System.out.print("Enter Risk Complexity Level (e.g. 5): ");
                     int n = input.nextInt();
                     input.nextLine();
-
                     long permutations = 1;  
                     int factorialCounter = 1;
-
                     while (factorialCounter <= n) {
                         permutations = permutations * factorialCounter;
                         factorialCounter++;
@@ -259,17 +267,13 @@ public class Main {
                     System.out.println("\n>> ACCESSING SUPPLY INVENTORY...");
                     String[] supplyItems = {"Quantum Batteries", "Laser Emitters", "Nutrients Packs", "Medi-Gel", "Dark Matter Fuel"};
                     int[] supplyCounts = {15, 4, 120, 10, 2};
-
-                    System.out.println("--- CURRENT STOCK ---");
                     for (int i = 0; i < supplyItems.length; i++) {
                         System.out.println("Locker [" + i + "]" + supplyItems[i] + "(Qty: " + supplyCounts[i] + ")");
                     }
-
                     System.out.println("\n>> QUICK RETRIEVAL SYSTEM");
                     System.out.print("Enter Locker Number (0-4) to inspect: ");
                     int index = input.nextInt();
                     input.nextLine();
-
                     if (index >= 0 && index < supplyItems.length) {
                         System.out.println("Retrieved: " + supplyItems[index]);
                         System.out.println("Quantity Available: " + supplyCounts[index]);
@@ -283,14 +287,10 @@ public class Main {
                     double[] signalValues = {10.5, 45.2, 98.1, 12.0, 67.5, 33.3};
                     double sum = 0;
                     double maxSignal = 0;
-
-                    System.out.println("[PROCESSING SIGNALS...]");
                     for (double signal : signalValues) {
                         System.out.println("Reading Signal: " + signal + " Hz");
                         sum += signal;
-                        if (signal > maxSignal) {
-                            maxSignal = signal;
-                        }
+                        if (signal > maxSignal) maxSignal = signal;
                         try { Thread.sleep(150); } catch (InterruptedException e) { }
                     }
                     double average = sum / signalValues.length;
@@ -311,7 +311,6 @@ public class Main {
                     int playerCol = 0;
                     sectorMap[playerRow][playerCol] = 'P';
                     sectorMap[1][2] = '*';
-
                     while (true) {
                         System.out.println("\n--- SECTOR GRID ---");
                         for (int i = 0; i < 3; i++) {
@@ -324,11 +323,9 @@ public class Main {
                         System.out.println("Enter new Row (0-2) or 9 to Exit Map: ");
                         int newRow = input.nextInt();
                         if (newRow == 9) break;
-
                         System.out.println("Enter new Col(0-2): ");
                         int newCol = input.nextInt();
                         input.nextLine();
-
                         if (newRow >= 0 && newRow < 3 && newCol >= 0 && newCol < 3) {
                             sectorMap[playerRow][playerCol] = '.';  // Clear old spot
                             playerRow = newRow;
@@ -341,35 +338,29 @@ public class Main {
                             System.out.println("[ERROR]: COORDINATES OUT OF RANGE. WARP FAILED");
                         }
                     }
-                    System.out.println("Exiting Navigation Map...");
                     break;
 
                 case "INTEGRITY":
-                    // NEW MODULE: ARRAY PRACTICE CONCEPTS
                     System.out.println("\n>> ACCESSING BLACK BOX DATA RECORDER...");
-
-                    // 1. Setup Data (Corrupted/Reversed Order)
                     int[] dataLog = {50, 42, 999, 12, 5, 2};
                     System.out.print("Raw Data Log (Corrupted): ");
                     for (int val : dataLog) System.out.println(val + " ");
                     System.out.println();
-
-                    // 2. REVERSING ARRAY LOGIC (To Restore Order)
-                    // Logic: Swap first with last, second with second-to-last, etc.
                     int len = dataLog.length;
-                    int halfLen = Math.floorDiv(len, 2);    // Integer division
-
+                    int halfLen = Math.floorDiv(len, 2);
                     for (int i = 0; i < halfLen; i++) {
-                        int temp = dataLog[i];              // Store first
-                        dataLog[i] = dataLog[len - 1 - i];  // Move last to first
-                        dataLog[len - 1 - i] = temp;        // Move stored first to last
+                        int temp = dataLog[i];
+                        dataLog[i] = dataLog[len - 1 - i];
+                        dataLog[len - 1 - i] = temp;
                     }
-
                     System.out.println("Restored Log (Reversed): ");
                     for (int val : dataLog) System.out.println(val + " ");
                     System.out.println();
-
-                    // 3. MAX/MIN LOGIC (Timeline Verification)
+                    int maxSpike = 0;
+                    for (int val : dataLog) {
+                        if (val > maxSpike) maxSpike = val;
+                    }
+                    System.out.println(RED + "Highest Energy Spike Detected: " + maxSpike + " MW" + currentTheme);
                     boolean isSorted = true;
                     for (int i = 0; i < dataLog.length; i++) {
                         if (dataLog[i] > dataLog[i+1]) {    // If current is greater than next, it's NOT sorted
@@ -377,12 +368,33 @@ public class Main {
                             break;
                         }
                     }
+                    if (isSorted) System.out.println("timeline Integrity: VERIFIED (Chronological Order");
+                    else System.out.println("timeline Integrity: ERROR (Timestamps out of sync)");
+                    break;
 
-                    if (isSorted) {
-                        System.out.println("timeline Integrity: VERIFIED (Chronological Order");
-                    } else {
-                        System.out.println("timeline Integrity: ERROR (Timestamps out of sync)");
+                case "THEME":
+                    // NEW MODULE: UI CUSTOMIZATION
+                    // Applies the concept of "Customization" from the video to the Console
+                    System.out.println("\n>> INTERFACE VISUAL CUSTOMIZATION...");
+                    System.out.println("Select Holographic Theme:");
+                    System.out.println("1. CYBER (Default/White)" + currentTheme);
+                    System.out.println("2. MATRIX (Green)" + currentTheme);
+                    System.out.println("3. ALERT (Red)" + currentTheme);
+                    System.out.println("4. VOID (Cyan)" + currentTheme);
+                    System.out.println("5. SOLAR (Yellow)" + currentTheme);
+
+                    int themeChoice = input.nextInt();
+                    input.nextLine();
+
+                    switch (themeChoice) {
+                        case 1: currentTheme = RESET; break;
+                        case 2: currentTheme = GREEN; break;
+                        case 3: currentTheme = RED; break;
+                        case 4: currentTheme = CYAN; break;
+                        case 5: currentTheme = YELLOW; break;
+                        default: System.out.println("Invalid selection. Keeping current theme");
                     }
+                    System.out.println(currentTheme + "Theme Updated. System Rebooting Interface...");
                     break;
 
                 default:
