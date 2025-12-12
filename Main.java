@@ -122,7 +122,7 @@ public class Main {
                     input.nextLine();
 
                     double kineticEnergy = 0.5 * mass * (velocity * velocity);
-                    System.out.printf("Kinetic Energy: %.2f Joules" + kineticEnergy);
+                    System.out.printf("Kinetic Energy: %.2f Joules\n" kineticEnergy);
                     break;
                 
                 case "ENCRYPT":
