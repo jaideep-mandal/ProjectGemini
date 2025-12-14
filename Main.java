@@ -12,7 +12,6 @@ public class Main {
     public static final String PURPLE = "\u001B[35m";
     public static final String CYAN = "\u001B[36m";
 
-    // Global State Variable for Theme
     public static String currentTheme = RESET;
 
     public static void main(String[] args){
@@ -22,27 +21,24 @@ public class Main {
     public static void bootSystem() {
         Scanner input = new Scanner(System.in);
 
-        // --- SECTION 1: LOGIN (Refactored into Method) ---
         if (!performLogin(input)) {
-            return; // Exit if login fails
+            return;
         }
 
-        // --- SECTION 2: SYSTEM DIAGNOSTIC (Runs Once) ---
         boolean isSecure = runDiagnostics(input);
 
-        // --- SECTION 3: COMMAND LOOP ---
         while (true) {
-            System.out.println(currentTheme);   // Apply Theme
-            printMenu();                        // Show Options
+            System.out.println(currentTheme);
+            printMenu();
 
             String commandRaw = input.nextLine();
             String command = commandRaw.toUpperCase();
 
             if (command.equals("EXIT")) {
                 System.out.println(RESET + "SHUTTING DOWN SYSTEM... GOODBYE.");
+                break;
             }
 
-            // LOOK HOW CLEAN THIS SWITCH IS NOW!
             switch (command) {
                 case "PHYSICS":     runPhysics(input);          break;
                 case "ENCRYPT":     runEncryption(input);       break;
@@ -50,16 +46,15 @@ public class Main {
                 case "SCAN":        runScanner(input);          break;
                 case "SIMULATION":  runSimulation(input);       break;
                 case "CALIBRATE":   runCalibration(input);      break;
-                case "SYSCHECK":    runSysCheck(input);         break;
+                case "SYSCHECK":    runSysCheck();              break;
                 case "SEARCH":      runSearch(input);           break;
                 case "MATRIX":      runMatrix(input);           break;
                 case "RISK":        runRisk(input);             break;
                 case "SUPPLY":      runSupply(input);           break;
                 case "ANALYZE":     runAnalysis(input);         break;
                 case "MAP":         runMap(input);              break;
-                case "INTEGRITY":   runIntegrity(input);        break;
+                case "INTEGRITY":   runIntegrity();             break;
                 case "THEME":       runThemeParams(input);      break;
-            
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -80,7 +75,7 @@ public class Main {
         int pin = input.nextInt();
         System.out.print("Fingerprint Verified? (true/false): ");
         boolean fingerprintVerified = input.nextBoolean();
-        input.nextLine();   // Consume newline
+        input.nextLine();
 
         if ((pin == 1234) || fingerprintVerified) {
             System.out.println("\n--- ACCESS GRANTED ---");
@@ -94,9 +89,8 @@ public class Main {
 
     public static boolean runDiagnostics(Scanner input) {
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
-        // Simplified for brevity in this refactor, but logic remains
         System.out.println("System Health: 100%");
-        return true;    //Assume secure for now
+        return true;
     }
 
     public static void printMenu() {
@@ -121,13 +115,78 @@ public class Main {
         input.nextLine();
 
         double kineticEnergy = 0.5 * mass * (velocity * velocity);
-        System.out.printf("Kinetic Energy: %.2f Joules\n" kineticEnergy);
+        System.out.printf("Kinetic Energy: %.2f Joules\n", kineticEnergy);
     }
 
+    // --- NEW: UPDATED ENCRYPTION MODULE USING OVERLOADING ---
     public static void runEncryption(Scanner input) {
-        System.out.println("\n>> ACCESSING ENCRYPTION CHANNEL...");
-        System.out.println("Encryption Key: A -> I");
+        System.out.println("\n>> ACCESSING ADAPTIVE ENCRYPTION SUITE...");
+        System.out.println("Enter Data to Encrypt: ");
+        String data = input.nextLine();
+
+        System.out.println("Select Security Level:");
+        System.out.println("1. Standard (Default Shift)");
+        System.out.println("2. Custom (User Shift)");
+        System.out.println("3. Quantum (Inversion + Hex)");
+        int choice = input.nextInt();
+        input.nextLine();   // Fix Scanner Trap
+
+        String result = "";
+
+        // METHOD OVERLOADING IN ACTION:
+        // Calling different method based on parameters
+        if (choice == 1) {
+            result = encrypt(data); //Calls Method A
+        } else if (choice == 2) {
+            System.out.print("Enter Shift Key (Int): ");
+            int key = input.nextInt();
+            input.nextLine();
+            result = encrypt(data, key);    // Calls Method B
+        } else if (choice == 3) {
+            result = encrypt(data, true);   // Calls Method C
+        }
+
+        System.out.println(GREEN + "Encrypted Output: " + result + currentTheme);
     }
+
+    // Overload 1: Standard Encryption (Shift + 1)
+    public static String encrypt(String msg) {
+        char[] chars = msg.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            chars[i] = (char) (chars[i] + 1);
+        }
+        return new String(chars);
+    }
+
+    // Overload 2: Custom Encryption (Shift + Key)
+    public static String encrypt(String msg, int key) {
+        char[] chars = msg.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            chars[i] = (char) (chars[i] + key);
+        }
+        return new String(chars);
+    }
+
+    // Overload 3: Quatum Encryption (Reverse + Hex-like Shift)
+    public static String encrypt(String msg, boolean isQuantum) {
+        if (!isQuantum) return msg;
+
+        // Reverse Logic
+        char[] chars = msg.toCharArray();
+        int n = chars.length;
+        for (int i = 0; i < n / 2; i++) {
+            char temp = chars[i];
+            chars[i] = chars[n - i - 1];
+            chars[n - i - 1] = temp;
+        }
+
+        // Complex Shift
+        for (int i = 0; i < chars.length; i++) {
+            chars[i] = (char) (chars[i] + 5);
+        }
+        return "[Q-SECURE]: " + new String(chars);
+    }
+    // ---------------------------------------------------------
 
     public static void runUpink(Scanner input, boolean isSecure) {
         if (!isSecure) {
@@ -158,7 +217,6 @@ public class Main {
         input.nextLine();
         int ai = new Random().nextInt(3);
         System.out.println("AI chose: " + ai);
-
         if (user == ai) System.out.println("DRAW");
         else if ((user == 0 && ai == 2) || (user == 1 && ai == 0)  || (user == 2 && ai == 1))
             System.out.println("VICTORY");
@@ -237,7 +295,6 @@ public class Main {
     public static void runMap(Scanner input) {
         System.out.println("\n>> SECTOR MAP...");
         char[][] map = new char[3][3];
-        // Initialize
         for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) map[i][j] = '.';
         
         int r = 0, c = 0;
