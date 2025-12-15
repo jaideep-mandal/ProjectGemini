@@ -1,5 +1,5 @@
-import java.util.Scanner;   // Import the Scanner class
-import java.util.Random;    // Import the Random class
+import java.util.Scanner;
+import java.util.Random;
 
 public class Main {
 
@@ -55,6 +55,7 @@ public class Main {
                 case "MAP":         runMap(input);              break;
                 case "INTEGRITY":   runIntegrity();             break;
                 case "THEME":       runThemeParams(input);      break;
+                case "TARGET":      runTargeting(input);        break;  // NEW MODULE
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -101,10 +102,43 @@ public class Main {
         System.out.println("7.  [SYSCHECK]  8.  [SEARCH]        9.  [MATRIX]");
         System.out.println("10. [RISK]      11. [SUPPLY]        12. [ANALYZE]");
         System.out.println("13. [MAP]       14. [INTEGRITY]     15. [THEME]");
-        System.out.println("16. [EXIT]");            
+        System.out.println("16. [TARGET]    17. [EXIT]");            
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
     }
+
+    // --- NEW: TARGETING SYSTEM USING VARARGS ---
+    public static void runTargeting(Scanner input) {
+        System.out.println("\n>> DEFENSE SYSTEMS ONLINE...");
+        System.out.println("Simulating Multi-Target Engagements:");
+
+        // Calling the SAME method with DIFFERENT number of arguments
+        // Case 1: Single Target
+        System.out.println("\n[SCENARIO 1: Lone Asteroid]");
+        fireSalvo("Plasma Bolt", 120);
+
+        // Case 2: Dual Targets
+        System.out.println("\n[SCENARIO 2: Twin Debris]");
+        fireSalvo("Railgun", 45, 90);
+
+        // Case 3: Full Barrage (5 Targets)
+        System.out.println("\n[SCENARIO 3: Asteroid Field]");
+        fireSalvo("Photon Torpedo", 10, 20, 30, 40, 50);
+    }
+
+    // THE VARARGS METHOD (int... coordinates)
+    public static void fireSalvo(String weapon, int... coordinates) {
+        System.out.println("Weapon System: " + weapon);
+        System.out.println("Target Lock Count: " + coordinates.length);
+
+        // Treat 'coordinates' exactly like an array
+        for (int sector : coordinates) {
+            System.out.println(" -> Firing at Sector " + sector + " [HIT]");
+            try { Thread.sleep(200); } catch(Exception e){}
+        }
+        System.out.println("Salvo Complete.");
+    }
+    // -------------------------------------------
 
     public static void runPhysics(Scanner input) {
         System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
@@ -118,7 +152,6 @@ public class Main {
         System.out.printf("Kinetic Energy: %.2f Joules\n", kineticEnergy);
     }
 
-    // --- NEW: UPDATED ENCRYPTION MODULE USING OVERLOADING ---
     public static void runEncryption(Scanner input) {
         System.out.println("\n>> ACCESSING ADAPTIVE ENCRYPTION SUITE...");
         System.out.println("Enter Data to Encrypt: ");
@@ -129,49 +162,37 @@ public class Main {
         System.out.println("2. Custom (User Shift)");
         System.out.println("3. Quantum (Inversion + Hex)");
         int choice = input.nextInt();
-        input.nextLine();   // Fix Scanner Trap
+        input.nextLine();
 
         String result = "";
 
-        // METHOD OVERLOADING IN ACTION:
-        // Calling different method based on parameters
-        if (choice == 1) {
-            result = encrypt(data); //Calls Method A
-        } else if (choice == 2) {
+        if (choice == 1) result = encrypt(data);
+        else if (choice == 2) {
             System.out.print("Enter Shift Key (Int): ");
             int key = input.nextInt();
             input.nextLine();
-            result = encrypt(data, key);    // Calls Method B
+            result = encrypt(data, key);
         } else if (choice == 3) {
-            result = encrypt(data, true);   // Calls Method C
+            result = encrypt(data, true);
         }
 
         System.out.println(GREEN + "Encrypted Output: " + result + currentTheme);
     }
 
-    // Overload 1: Standard Encryption (Shift + 1)
     public static String encrypt(String msg) {
         char[] chars = msg.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            chars[i] = (char) (chars[i] + 1);
-        }
+        for (int i = 0; i < chars.length; i++) chars[i] = (char) (chars[i] + 1);
         return new String(chars);
     }
 
-    // Overload 2: Custom Encryption (Shift + Key)
     public static String encrypt(String msg, int key) {
         char[] chars = msg.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            chars[i] = (char) (chars[i] + key);
-        }
+        for (int i = 0; i < chars.length; i++) chars[i] = (char) (chars[i] + key);
         return new String(chars);
     }
 
-    // Overload 3: Quatum Encryption (Reverse + Hex-like Shift)
     public static String encrypt(String msg, boolean isQuantum) {
         if (!isQuantum) return msg;
-
-        // Reverse Logic
         char[] chars = msg.toCharArray();
         int n = chars.length;
         for (int i = 0; i < n / 2; i++) {
@@ -179,14 +200,9 @@ public class Main {
             chars[i] = chars[n - i - 1];
             chars[n - i - 1] = temp;
         }
-
-        // Complex Shift
-        for (int i = 0; i < chars.length; i++) {
-            chars[i] = (char) (chars[i] + 5);
-        }
+        for (int i = 0; i < chars.length; i++) chars[i] = (char) (chars[i] + 5);
         return "[Q-SECURE]: " + new String(chars);
     }
-    // ---------------------------------------------------------
 
     public static void runUpink(Scanner input, boolean isSecure) {
         if (!isSecure) {
@@ -195,7 +211,7 @@ public class Main {
             System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
             System.out.print("Enter Messege: ");
             String msg = input.nextLine();
-            System.out.println("Sending: "  + msg.replace("danger", "[REDACTED]"));
+            System.out.println("Sending: " + msg.replace("danger", "[REDACTED]"));
         }
     }
 
@@ -219,8 +235,8 @@ public class Main {
         System.out.println("AI chose: " + ai);
         if (user == ai) System.out.println("DRAW");
         else if ((user == 0 && ai == 2) || (user == 1 && ai == 0)  || (user == 2 && ai == 1))
-            System.out.println("VICTORY");
-        else System.out.println("DEFEAT");
+            System.out.println("VICTORY" + currentTheme);
+        else System.out.println("DEFEAT" + currentTheme);
     }
 
     public static void runCalibration(Scanner input) {
@@ -237,7 +253,7 @@ public class Main {
         System.out.println("\n>> POWER CYCLE...");
         for (int i = 1; i <= 3; i++) {
             System.out.println("Sector " + i + " OK");
-            try { Thread.sleep(200); } catch(InterruptedException e) {}
+            try { Thread.sleep(200); } catch(Exception e) {}
         }
     }
 
