@@ -55,7 +55,8 @@ public class Main {
                 case "MAP":         runMap(input);              break;
                 case "INTEGRITY":   runIntegrity();             break;
                 case "THEME":       runThemeParams(input);      break;
-                case "TARGET":      runTargeting(input);        break;  // NEW MODULE
+                case "TARGET":      runTargeting(input);        break;
+                case "REACTOR":     runReactor(input);          break;  // NEW MODULE
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -102,43 +103,80 @@ public class Main {
         System.out.println("7.  [SYSCHECK]  8.  [SEARCH]        9.  [MATRIX]");
         System.out.println("10. [RISK]      11. [SUPPLY]        12. [ANALYZE]");
         System.out.println("13. [MAP]       14. [INTEGRITY]     15. [THEME]");
-        System.out.println("16. [TARGET]    17. [EXIT]");            
+        System.out.println("16. [TARGET]    17. [REACTOR]       18. [EXIT]");            
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
     }
 
-    // --- NEW: TARGETING SYSTEM USING VARARGS ---
+    // --- NEW: NUCLEAR REACTOR SIMULATION (RECURSION) ---
+    public static void runReactor(Scanner input) {
+        System.out.println("\n>> REACTOR CONTROL SUBSYSTEM...");
+        System.out.println("1. Calculate Chain Reaction Yeild (Factorial)");
+        System.out.println("2. Generate Sheild Harmonics (Fabonacci)");
+        int choice = input.nextInt();
+        input.nextLine();   // Fix Scanner Trap
+
+        if (choice == 1) {
+            System.out.print("Enter Reaction Depth (1-20): ");
+            int depth = input.nextInt();
+            input.nextLine();
+            // RECURSION CALL
+            long energy = calculateReaction(depth);
+            System.out.println("Theoretical Energy Output: " + energy + " Gigajoules");
+        } else if (choice == 2) {
+            System.out.print("Enter Harmonic Layer Count (1-15): ");
+            int layers = input.nextInt();
+            input.nextLine();
+            System.out.print("Harmonic Sequence: ");
+            for (int i = 0; i < layers; i++) {
+                // RECURSION CALL IN LOOP
+                System.out.print(calculateShieldHarmonics(i) + " ");
+            }
+            System.out.println("\nShield Modulation Complete.");
+        }
+    }
+
+    // Recursive Method 1: Factorial (Chain Reaction)
+    public static long calculateReaction(int n) {
+        // Base Case: If we reach 0 or 1, stop recursion
+        if (n == 0 || n == 1) {
+            return 1;
+        }
+        // Recursion Case: n * (n-1)
+        return n * calculateReaction(n - 1);
+    }
+
+    // Recursive Method 2: Fabonacci (Sheild Harmonics)
+    public static int calculateShieldHarmonics(int n) {
+        // Base Case: 0 or 1 return themselves
+        if (n <= 1) {
+            return n;
+        }
+        // Recursive Case: sum of previous two numbers
+        return calculateShieldHarmonics(n - 1) + calculateShieldHarmonics(n - 2);
+    }
+    // -------------------------------------------
+
     public static void runTargeting(Scanner input) {
         System.out.println("\n>> DEFENSE SYSTEMS ONLINE...");
         System.out.println("Simulating Multi-Target Engagements:");
-
-        // Calling the SAME method with DIFFERENT number of arguments
-        // Case 1: Single Target
         System.out.println("\n[SCENARIO 1: Lone Asteroid]");
         fireSalvo("Plasma Bolt", 120);
-
-        // Case 2: Dual Targets
         System.out.println("\n[SCENARIO 2: Twin Debris]");
         fireSalvo("Railgun", 45, 90);
-
-        // Case 3: Full Barrage (5 Targets)
         System.out.println("\n[SCENARIO 3: Asteroid Field]");
         fireSalvo("Photon Torpedo", 10, 20, 30, 40, 50);
     }
 
-    // THE VARARGS METHOD (int... coordinates)
     public static void fireSalvo(String weapon, int... coordinates) {
         System.out.println("Weapon System: " + weapon);
         System.out.println("Target Lock Count: " + coordinates.length);
-
-        // Treat 'coordinates' exactly like an array
         for (int sector : coordinates) {
             System.out.println(" -> Firing at Sector " + sector + " [HIT]");
             try { Thread.sleep(200); } catch(Exception e){}
         }
         System.out.println("Salvo Complete.");
     }
-    // -------------------------------------------
 
     public static void runPhysics(Scanner input) {
         System.out.println("\n>> ACCESSING PHYSICS ENGINE...");
@@ -175,7 +213,6 @@ public class Main {
         } else if (choice == 3) {
             result = encrypt(data, true);
         }
-
         System.out.println(GREEN + "Encrypted Output: " + result + currentTheme);
     }
 
