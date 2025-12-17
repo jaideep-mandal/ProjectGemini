@@ -56,7 +56,8 @@ public class Main {
                 case "INTEGRITY":   runIntegrity();             break;
                 case "THEME":       runThemeParams(input);      break;
                 case "TARGET":      runTargeting(input);        break;
-                case "REACTOR":     runReactor(input);          break;  // NEW MODULE
+                case "REACTOR":     runReactor(input);          break;
+                case "ENVIRONMENT": runEnvironment(input);      break;  // NEW MODULE
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -103,24 +104,62 @@ public class Main {
         System.out.println("7.  [SYSCHECK]  8.  [SEARCH]        9.  [MATRIX]");
         System.out.println("10. [RISK]      11. [SUPPLY]        12. [ANALYZE]");
         System.out.println("13. [MAP]       14. [INTEGRITY]     15. [THEME]");
-        System.out.println("16. [TARGET]    17. [REACTOR]       18. [EXIT]");            
+        System.out.println("16. [TARGET]    17. [REACTOR]       18. [ENVIRONMENT]");            
+        System.out.println("19. [EXIT]");
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
     }
 
-    // --- NEW: NUCLEAR REACTOR SIMULATION (RECURSION) ---
+    // --- NEW: ENVIRONMENT CONTROL MODULE ---
+    public static void runEnvironment(Scanner input) {
+        System.out.println("\n>> ENVIRONMENT CONTROL...");
+        System.out.println("1. Temperature Regulation");
+        System.out.println("2. Holographic Pattern Test");
+        int choice = input.nextInt();
+        input.nextLine();
+
+        if (choice == 1) {
+            System.out.print("Enter Ambient Temp (Celsius): ");
+            double c = input.nextDouble();
+            input.nextLine();
+            double f = celsiusToFahrenheit(c);
+            System.out.printf("Converted Temp: %.1f°F\n", f);
+            if (f > 100) System.out.println(RED + "[WARNING]: HEAT HAZARD" + currentTheme);
+            else System.out.println(GREEN + "Temp Nominal" + currentTheme);
+        } else if (choice == 2) {
+            System.out.println("Enter Pattern Size (Rows): ");
+            int rows = input.nextInt();
+            input.nextLine();
+            printHoloPattern(rows);
+        }
+    }
+
+    public static double celsiusToFahrenheit(double c) {
+        return (c * 9/5) + 32;
+    }
+
+    public static void printHoloPattern(int rows) {
+        System.out.println("Generating Holo-Emitter Pattern:");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print("* ");
+            }
+            System.out.println();
+        }
+    }
+    // -------------------------------------------
+
     public static void runReactor(Scanner input) {
         System.out.println("\n>> REACTOR CONTROL SUBSYSTEM...");
         System.out.println("1. Calculate Chain Reaction Yeild (Factorial)");
         System.out.println("2. Generate Sheild Harmonics (Fabonacci)");
         int choice = input.nextInt();
-        input.nextLine();   // Fix Scanner Trap
+        input.nextLine();
 
         if (choice == 1) {
             System.out.print("Enter Reaction Depth (1-20): ");
             int depth = input.nextInt();
             input.nextLine();
-            // RECURSION CALL
             long energy = calculateReaction(depth);
             System.out.println("Theoretical Energy Output: " + energy + " Gigajoules");
         } else if (choice == 2) {
@@ -129,33 +168,21 @@ public class Main {
             input.nextLine();
             System.out.print("Harmonic Sequence: ");
             for (int i = 0; i < layers; i++) {
-                // RECURSION CALL IN LOOP
                 System.out.print(calculateShieldHarmonics(i) + " ");
             }
             System.out.println("\nShield Modulation Complete.");
         }
     }
 
-    // Recursive Method 1: Factorial (Chain Reaction)
     public static long calculateReaction(int n) {
-        // Base Case: If we reach 0 or 1, stop recursion
-        if (n == 0 || n == 1) {
-            return 1;
-        }
-        // Recursion Case: n * (n-1)
+        if (n == 0 || n == 1) return 1;
         return n * calculateReaction(n - 1);
     }
 
-    // Recursive Method 2: Fabonacci (Sheild Harmonics)
     public static int calculateShieldHarmonics(int n) {
-        // Base Case: 0 or 1 return themselves
-        if (n <= 1) {
-            return n;
-        }
-        // Recursive Case: sum of previous two numbers
+        if (n <= 1) return n;
         return calculateShieldHarmonics(n - 1) + calculateShieldHarmonics(n - 2);
     }
-    // -------------------------------------------
 
     public static void runTargeting(Scanner input) {
         System.out.println("\n>> DEFENSE SYSTEMS ONLINE...");
