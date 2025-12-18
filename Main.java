@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class Main {
 
-    // --- GLOBAL CONSTANTS (Visual Theme) ---
+    // Global Constants
     public static final String RESET = "\u001B[0m";
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
@@ -21,10 +21,23 @@ public class Main {
     public static void bootSystem() {
         Scanner input = new Scanner(System.in);
 
-        if (!performLogin(input)) {
+        // --- NEW: OOP IMPLEMENTATION ---
+        // Instead of loose variables, we create a User OBJECT.
+        User activeUser = new User();
+
+        // Setup the default authorized user (The Blueprint in action)
+        activeUser.name = "Commander";
+        activeUser.pin = 1234;
+        activeUser.hasFingerprint = true;
+        activeUser.clearanceLevel = 5;
+
+        if (!performLogin(input, activeUser)) {
             return;
         }
 
+        activeUser.printuserInfo(); // Call the object's method
+
+        // System Loop
         boolean isSecure = runDiagnostics(input);
 
         while (true) {
@@ -40,24 +53,24 @@ public class Main {
             }
 
             switch (command) {
-                case "PHYSICS":     runPhysics(input);          break;
-                case "ENCRYPT":     runEncryption(input);       break;
-                case "UPLINK":      runUpink(input, isSecure);  break;
-                case "SCAN":        runScanner(input);          break;
-                case "SIMULATION":  runSimulation(input);       break;
-                case "CALIBRATE":   runCalibration(input);      break;
-                case "SYSCHECK":    runSysCheck();              break;
-                case "SEARCH":      runSearch(input);           break;
-                case "MATRIX":      runMatrix(input);           break;
-                case "RISK":        runRisk(input);             break;
-                case "SUPPLY":      runSupply(input);           break;
-                case "ANALYZE":     runAnalysis(input);         break;
-                case "MAP":         runMap(input);              break;
-                case "INTEGRITY":   runIntegrity();             break;
-                case "THEME":       runThemeParams(input);      break;
-                case "TARGET":      runTargeting(input);        break;
-                case "REACTOR":     runReactor(input);          break;
-                case "ENVIRONMENT": runEnvironment(input);      break;  // NEW MODULE
+                case "PHYSICS":     runPhysics(input);                      break;
+                case "ENCRYPT":     runEncryption(input);                   break;
+                case "UPLINK":      runUpink(input, isSecure, activeUser);  break;
+                case "SCAN":        runScanner(input);                      break;
+                case "SIMULATION":  runSimulation(input);                   break;
+                case "CALIBRATE":   runCalibration(input);                  break;
+                case "SYSCHECK":    runSysCheck();                          break;
+                case "SEARCH":      runSearch(input);                       break;
+                case "MATRIX":      runMatrix(input);                       break;
+                case "RISK":        runRisk(input);                         break;
+                case "SUPPLY":      runSupply(input);                       break;
+                case "ANALYZE":     runAnalysis(input);                     break;
+                case "MAP":         runMap(input);                          break;
+                case "INTEGRITY":   runIntegrity();                         break;
+                case "THEME":       runThemeParams(input);                  break;
+                case "TARGET":      runTargeting(input);                    break;
+                case "REACTOR":     runReactor(input);                      break;
+                case "ENVIRONMENT": runEnvironment(input);                  break;
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -70,19 +83,29 @@ public class Main {
     //                       MODULE METHODS
     // =================================================================
 
+    // UPDATED LOGIN: Accepts a User Object to check against
     public static boolean performLogin(Scanner input) {
         System.out.println("Starting Project: ProjectGemini");
+
         System.out.print("Enter User Name: ");
-        String userName = input.nextLine();
+        String inputName = input.nextLine();
+
+        // Simple check: Must match the authorized object's name
+        if (!inputName.equalsIgnoreCase(authorizedUser.name)) {
+            System.out.println(RED + "\n[ERROR]: USER NOT FOUND." + RESET);
+            return false;
+        }
+
         System.out.print("Enter Security PIN: ");
-        int pin = input.nextInt();
+        int inputPin = input.nextInt();
+
         System.out.print("Fingerprint Verified? (true/false): ");
-        boolean fingerprintVerified = input.nextBoolean();
+        boolean inputFingerprint = input.nextBoolean();
         input.nextLine();
 
-        if ((pin == 1234) || fingerprintVerified) {
+        if ((inputPin == 1234) || (inputFingerprint && authorizedUser.hasFingerprint)) {
             System.out.println("\n--- ACCESS GRANTED ---");
-            System.out.println("Welcome, " + userName + "!");
+            System.out.println("Welcome, " + authorizedUser.name + "!");
             return true;
         } else {
             System.out.println(RED + "\n[ERROR]: AUTHENTICATION FAILED." + RESET);
@@ -90,6 +113,22 @@ public class Main {
         }
     }
 
+    // UPDATED UPLINK: Uses User Object for the log
+    public static void runUpink(Scanner input, boolean isSecure, User user) {
+        if (!isSecure) {
+            System.out.println(RED + "\n[ERROR]: UPLINK DENIED." + currentTheme);
+        } else {
+            System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
+            System.out.print("Enter Messege: ");
+            String msg = input.nextLine();
+
+            // Using the object's property (user.name)
+            System.out.println("TRANSMISSION AUTHOR: " + user.name + " (Level " + user.clearanceLevel + ")");
+            System.out.println("Sending: " + msg.replace("danger", "[REDACTED]"));
+        }
+    }
+
+    // --- EXISTING METHODS (UNCHANGED) ---
     public static boolean runDiagnostics(Scanner input) {
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
         System.out.println("System Health: 100%");
@@ -147,7 +186,6 @@ public class Main {
             System.out.println();
         }
     }
-    // -------------------------------------------
 
     public static void runReactor(Scanner input) {
         System.out.println("\n>> REACTOR CONTROL SUBSYSTEM...");
@@ -266,17 +304,6 @@ public class Main {
         }
         for (int i = 0; i < chars.length; i++) chars[i] = (char) (chars[i] + 5);
         return "[Q-SECURE]: " + new String(chars);
-    }
-
-    public static void runUpink(Scanner input, boolean isSecure) {
-        if (!isSecure) {
-            System.out.println("\n[ERROR]: UPLINK DENIED." + currentTheme);
-        } else {
-            System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
-            System.out.print("Enter Messege: ");
-            String msg = input.nextLine();
-            System.out.println("Sending: " + msg.replace("danger", "[REDACTED]"));
-        }
     }
 
     public static void runScanner (Scanner input) {
