@@ -7,7 +7,7 @@ public class User {
     int clearanceLevel;
 
     // A method specific to this object (Behavior)
-    public void printuserInfo() {
+    public void printUserInfo() {
         System.out.println("User Profile: " + name);
         System.out.println("Clearance Level: " + clearanceLevel);
         System.out.println("Biometric Status: " + (hasFingerprint ? "REGISTERED" : "NONE"));

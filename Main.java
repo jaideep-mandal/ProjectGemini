@@ -31,11 +31,12 @@ public class Main {
         activeUser.hasFingerprint = true;
         activeUser.clearanceLevel = 5;
 
+        // Perform Login using the Object
         if (!performLogin(input, activeUser)) {
             return;
         }
 
-        activeUser.printuserInfo(); // Call the object's method
+        activeUser.printUserInfo(); // Call the object's method
 
         // System Loop
         boolean isSecure = runDiagnostics(input);
@@ -84,7 +85,7 @@ public class Main {
     // =================================================================
 
     // UPDATED LOGIN: Accepts a User Object to check against
-    public static boolean performLogin(Scanner input) {
+    public static boolean performLogin(Scanner input, User authorizedUser) {
         System.out.println("Starting Project: ProjectGemini");
 
         System.out.print("Enter User Name: ");
