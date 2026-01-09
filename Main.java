@@ -21,24 +21,17 @@ public class Main {
     public static void bootSystem() {
         Scanner input = new Scanner(System.in);
 
-        // --- NEW: OOP IMPLEMENTATION ---
-        // Instead of loose variables, we create a User OBJECT.
         User activeUser = new User();
-
-        // Setup the default authorized user (The Blueprint in action)
         activeUser.name = "Commander";
         activeUser.pin = 1234;
         activeUser.hasFingerprint = true;
         activeUser.clearanceLevel = 5;
 
-        // Perform Login using the Object
         if (!performLogin(input, activeUser)) {
             return;
         }
 
-        activeUser.printUserInfo(); // Call the object's method
-
-        // System Loop
+        activeUser.printUserInfo();
         boolean isSecure = runDiagnostics(input);
 
         while (true) {
@@ -72,6 +65,7 @@ public class Main {
                 case "TARGET":      runTargeting(input);                    break;
                 case "REACTOR":     runReactor(input);                      break;
                 case "ENVIRONMENT": runEnvironment(input);                  break;
+                case "COMPONENT":   runComponentSystems();                  break;  // NEW MODULE
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -80,30 +74,42 @@ public class Main {
         input.close();
     }
 
-    // =================================================================
-    //                       MODULE METHODS
-    // =================================================================
+    // --- NEW: COMPONENT SYSTEM (INHERITANCE DEMO) ---
+    public static void runComponentSystems() {
+        System.out.println("\n>> SHIP COMPONENT MANAGEMENT SYSTEM...");
 
-    // UPDATED LOGIN: Accepts a User Object to check against
+        // 1. Create specific objects (subclasses)
+        Engine mainEngine = new Engine();
+        mainEngine.name = "HyperDrive X1";
+        mainEngine.status = true;
+        mainEngine.powerOutput = 100;
+
+        Weapon laserCannon = new Weapon();
+        laserCannon.name = "Turbo Laser";
+        laserCannon.status = true;
+        laserCannon.damageType = "Thermal";
+
+        // 2. Use Polymorphism (Treat them as generic ShipComponents)
+        System.out.println("[STATUS CHECK]");
+        mainEngine.checkStatus();   // Engine-specific method
+        laserCannon.checkStatus();  // Weapon-specific method
+    }
+    // ------------------------------------------------
+
+    // ... (KEEP ALL OTHER EXISTING METHODS BELOW) ...
     public static boolean performLogin(Scanner input, User authorizedUser) {
         System.out.println("Starting Project: ProjectGemini");
-
         System.out.print("Enter User Name: ");
         String inputName = input.nextLine();
-
-        // Simple check: Must match the authorized object's name
         if (!inputName.equalsIgnoreCase(authorizedUser.name)) {
             System.out.println(RED + "\n[ERROR]: USER NOT FOUND." + RESET);
             return false;
         }
-
         System.out.print("Enter Security PIN: ");
         int inputPin = input.nextInt();
-
         System.out.print("Fingerprint Verified? (true/false): ");
         boolean inputFingerprint = input.nextBoolean();
         input.nextLine();
-
         if ((inputPin == 1234) || (inputFingerprint && authorizedUser.hasFingerprint)) {
             System.out.println("\n--- ACCESS GRANTED ---");
             System.out.println("Welcome, " + authorizedUser.name + "!");
@@ -114,22 +120,6 @@ public class Main {
         }
     }
 
-    // UPDATED UPLINK: Uses User Object for the log
-    public static void runUpink(Scanner input, boolean isSecure, User user) {
-        if (!isSecure) {
-            System.out.println(RED + "\n[ERROR]: UPLINK DENIED." + currentTheme);
-        } else {
-            System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
-            System.out.print("Enter Messege: ");
-            String msg = input.nextLine();
-
-            // Using the object's property (user.name)
-            System.out.println("TRANSMISSION AUTHOR: " + user.name + " (Level " + user.clearanceLevel + ")");
-            System.out.println("Sending: " + msg.replace("danger", "[REDACTED]"));
-        }
-    }
-
-    // --- EXISTING METHODS (UNCHANGED) ---
     public static boolean runDiagnostics(Scanner input) {
         System.out.println("\n--- INITIATING SYSTEM DIAGNOSTIC ---");
         System.out.println("System Health: 100%");
@@ -145,19 +135,17 @@ public class Main {
         System.out.println("10. [RISK]      11. [SUPPLY]        12. [ANALYZE]");
         System.out.println("13. [MAP]       14. [INTEGRITY]     15. [THEME]");
         System.out.println("16. [TARGET]    17. [REACTOR]       18. [ENVIRONMENT]");            
-        System.out.println("19. [EXIT]");
+        System.out.println("19. [COMPONENT] 20. [EXIT]");
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
     }
 
-    // --- NEW: ENVIRONMENT CONTROL MODULE ---
     public static void runEnvironment(Scanner input) {
         System.out.println("\n>> ENVIRONMENT CONTROL...");
         System.out.println("1. Temperature Regulation");
         System.out.println("2. Holographic Pattern Test");
         int choice = input.nextInt();
         input.nextLine();
-
         if (choice == 1) {
             System.out.print("Enter Ambient Temp (Celsius): ");
             double c = input.nextDouble();
@@ -174,16 +162,12 @@ public class Main {
         }
     }
 
-    public static double celsiusToFahrenheit(double c) {
-        return (c * 9/5) + 32;
-    }
+    public static double celsiusToFahrenheit(double c) { return (c * 9/5) + 32; }
 
     public static void printHoloPattern(int rows) {
         System.out.println("Generating Holo-Emitter Pattern:");
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j <= i; j++) {
-                System.out.print("* ");
-            }
+            for (int j = 0; j <= i; j++) System.out.print("* ");
             System.out.println();
         }
     }
@@ -194,7 +178,6 @@ public class Main {
         System.out.println("2. Generate Sheild Harmonics (Fabonacci)");
         int choice = input.nextInt();
         input.nextLine();
-
         if (choice == 1) {
             System.out.print("Enter Reaction Depth (1-20): ");
             int depth = input.nextInt();
@@ -206,9 +189,7 @@ public class Main {
             int layers = input.nextInt();
             input.nextLine();
             System.out.print("Harmonic Sequence: ");
-            for (int i = 0; i < layers; i++) {
-                System.out.print(calculateShieldHarmonics(i) + " ");
-            }
+            for (int i = 0; i < layers; i++) System.out.print(calculateShieldHarmonics(i) + " ");
             System.out.println("\nShield Modulation Complete.");
         }
     }
@@ -251,7 +232,6 @@ public class Main {
         System.out.print("Enter Velocity (m/s): ");
         double velocity = input.nextDouble();
         input.nextLine();
-
         double kineticEnergy = 0.5 * mass * (velocity * velocity);
         System.out.printf("Kinetic Energy: %.2f Joules\n", kineticEnergy);
     }
@@ -260,25 +240,17 @@ public class Main {
         System.out.println("\n>> ACCESSING ADAPTIVE ENCRYPTION SUITE...");
         System.out.println("Enter Data to Encrypt: ");
         String data = input.nextLine();
-
-        System.out.println("Select Security Level:");
-        System.out.println("1. Standard (Default Shift)");
-        System.out.println("2. Custom (User Shift)");
-        System.out.println("3. Quantum (Inversion + Hex)");
+        System.out.println("Select Security Level: 1. Standard 2. Custom 3. Quantum");
         int choice = input.nextInt();
         input.nextLine();
-
         String result = "";
-
         if (choice == 1) result = encrypt(data);
         else if (choice == 2) {
             System.out.print("Enter Shift Key (Int): ");
             int key = input.nextInt();
             input.nextLine();
             result = encrypt(data, key);
-        } else if (choice == 3) {
-            result = encrypt(data, true);
-        }
+        } else if (choice == 3) result = encrypt(data, true);
         System.out.println(GREEN + "Encrypted Output: " + result + currentTheme);
     }
 
@@ -305,6 +277,18 @@ public class Main {
         }
         for (int i = 0; i < chars.length; i++) chars[i] = (char) (chars[i] + 5);
         return "[Q-SECURE]: " + new String(chars);
+    }
+
+    public static void runUpink(Scanner input, boolean isSecure, User user) {
+        if (!isSecure) {
+            System.out.println(RED + "\n[ERROR]: UPLINK DENIED." + currentTheme);
+        } else {
+            System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
+            System.out.print("Enter Messege: ");
+            String msg = input.nextLine();
+            System.out.println("TRANSMISSION AUTHOR: " + user.name + " (Level " + user.clearanceLevel + ")");
+            System.out.println("Sending: " + msg.replace("danger", "[REDACTED]"));
+        }
     }
 
     public static void runScanner (Scanner input) {
@@ -404,10 +388,7 @@ public class Main {
         System.out.println("\n>> SECTOR MAP...");
         char[][] map = new char[3][3];
         for (int i = 0; i < 3; i++) for (int j = 0; j < 3; j++) map[i][j] = '.';
-        
-        int r = 0, c = 0;
-        map[r][c] = 'P';
-        
+        int r = 0, c = 0; map[r][c] = 'P';
         while (true) {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) System.out.print(map[i][j] + " ");
@@ -421,9 +402,7 @@ public class Main {
             input.nextLine();
                             
             if (nr >= 0 && nr < 3 && nc >= 0 && nc < 3) {
-                map[r][c] = '.';
-                r = nr; c = nc;
-                map[r][c] = 'P';
+                map[r][c] = '.'; r = nr; c = nc; map[r][c] = 'P';
             }
         }
     }
