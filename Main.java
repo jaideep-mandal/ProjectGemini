@@ -65,7 +65,8 @@ public class Main {
                 case "TARGET":      runTargeting(input);                    break;
                 case "REACTOR":     runReactor(input);                      break;
                 case "ENVIRONMENT": runEnvironment(input);                  break;
-                case "COMPONENT":   runComponentSystems();                  break;  // NEW MODULE
+                case "COMPONENT":   runComponentSystems();                  break;
+                case "DROID":       runDroidSquad(input);                   break;  // NEW MODULE
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -74,11 +75,48 @@ public class Main {
         input.close();
     }
 
-    // --- NEW: COMPONENT SYSTEM (INHERITANCE DEMO) ---
+    // --- NEW: DROID SQUAD MODULE (ARRAY OF OBJECTS) ---
+    public static void runDroidSquad(Scanner input) {
+        System.out.println("\n>> DROID SQUAD MANAGEMENT...");
+
+        // 1. Create Array of Objects
+        Droid[] squad = new Droid[3];
+
+        // 2. Initialize Objects
+        squad[0] = new Droid(); squad[0].name = "R2-Unit";      squad[0].activate();
+        squad[1] = new Droid(); squad[1].name = "BB-Unit";      squad[0].activate();
+        squad[2] = new Droid(); squad[2].name = "C3-Protocol";  squad[0].activate();
+
+        while(true) {
+            System.out.println("\n--- SQUAD STATUS ---");
+            for(Droid d : squad) {
+                d.displayStatus();
+            }
+
+            System.out.println("\nActions: 1.Assign Task 2.Recharge All 3.Exit");
+            int choice = input.nextInt();
+            input.nextLine();
+
+            if (choice == 1) {
+                System.out.print("Select Droid ID (0-2): ");
+                int id = input.nextInt();
+                input.nextLine();
+                if (id >= 0 && id < 3) {
+                    System.out.print("Enter Task: ");
+                    String task = input.nextLine();
+                    squad[id].performTask(task);
+                }
+            } else if (choice == 2) {
+                for(Droid d : squad) d.recharge();
+            } else {
+                break;
+            }
+        }
+    }
+    // ------------------------------------------------
+
     public static void runComponentSystems() {
         System.out.println("\n>> SHIP COMPONENT MANAGEMENT SYSTEM...");
-
-        // 1. Create specific objects (subclasses)
         Engine mainEngine = new Engine();
         mainEngine.name = "HyperDrive X1";
         mainEngine.status = true;
@@ -89,14 +127,15 @@ public class Main {
         laserCannon.status = true;
         laserCannon.damageType = "Thermal";
 
-        // 2. Use Polymorphism (Treat them as generic ShipComponents)
         System.out.println("[STATUS CHECK]");
-        mainEngine.checkStatus();   // Engine-specific method
-        laserCannon.checkStatus();  // Weapon-specific method
-    }
-    // ------------------------------------------------
+        mainEngine.checkStatus();
+        laserCannon.checkStatus();
 
-    // ... (KEEP ALL OTHER EXISTING METHODS BELOW) ...
+        System.out.println("[SYSTEM TEST]");
+        mainEngine.boost();
+        laserCannon.fire();
+    }
+
     public static boolean performLogin(Scanner input, User authorizedUser) {
         System.out.println("Starting Project: ProjectGemini");
         System.out.print("Enter User Name: ");
@@ -135,7 +174,7 @@ public class Main {
         System.out.println("10. [RISK]      11. [SUPPLY]        12. [ANALYZE]");
         System.out.println("13. [MAP]       14. [INTEGRITY]     15. [THEME]");
         System.out.println("16. [TARGET]    17. [REACTOR]       18. [ENVIRONMENT]");            
-        System.out.println("19. [COMPONENT] 20. [EXIT]");
+        System.out.println("19. [COMPONENT] 20. [DROID]         21. [EXIT]");
         System.out.println("\n==========================================");
         System.out.println("ENTER COMMAND MODULE NAME: ");
     }
