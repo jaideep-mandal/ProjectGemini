@@ -3,14 +3,13 @@ import java.util.Random;
 
 public class Main {
 
-    // Global Constants
-    public static final String RESET = "\u001B[0m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String BLUE = "\u001B[34m";
-    public static final String YELLOW = "\u001B[33m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String CYAN = "\u001B[36m";
+    public static final String RESET    = "\u001B[0m";
+    public static final String RED      = "\u001B[31m";
+    public static final String GREEN    = "\u001B[32m";
+    public static final String BLUE     = "\u001B[34m";
+    public static final String YELLOW   = "\u001B[33m";
+    public static final String PURPLE   = "\u001B[35m";
+    public static final String CYAN     = "\u001B[36m";
 
     public static String currentTheme = RESET;
 
@@ -66,7 +65,8 @@ public class Main {
                 case "REACTOR":     runReactor(input);                      break;
                 case "ENVIRONMENT": runEnvironment(input);                  break;
                 case "COMPONENT":   runComponentSystems();                  break;
-                case "DROID":       runDroidSquad(input);                   break;  // NEW MODULE
+                case "DROID":       runDroidSquad(input);                   break;
+                case "ROBOT":       runRobotController(input);              break;  // NEW MODULE
                 default:
                     System.out.println("\n[ERROR]: UNKNOWN COMMAND. TRY AGAIN.");
                     break;
@@ -75,28 +75,46 @@ public class Main {
         input.close();
     }
 
-    // --- NEW: DROID SQUAD MODULE (ARRAY OF OBJECTS) ---
+    // --- NEW: ROBOT CONTROL (ENCAPSULATION DEMO) ---
+    public static void runRobotController(Scanner input) {
+        System.out.println("\n>> ROBOT CONTROL INTERFACE...");
+
+        // Create Object
+        Robot bot = new Robot();
+
+        // 1. Set Data using SETTER (Safe)
+        bot.setId("XJ-9");
+        bot.setBattery(100);
+        bot.setMode("Idle");    // Valid mode
+
+        // 2. Read Data using GETTER
+        System.out.println("Connected to: " + bot.getId());
+        System.out.println("Current Mode: " + bot.getMode());
+
+        // 3. Try to break it (Validation Test)
+        System.out.println("\n[TEST]: Attempting to set Invalid Mode...");
+        bot.setMode("DanceParty");  // Should trigger error
+
+        System.out.println("\n[TEST]: Attempting to set Invalid Battery...");
+        bot.setBattery(5000);   // Should trigger error
+
+        System.out.println("\n[STATUS]: " + bot.getId() + " remains in " + bot.getMode() + " mode.");
+    }
+    // ------------------------------------------------
+
     public static void runDroidSquad(Scanner input) {
         System.out.println("\n>> DROID SQUAD MANAGEMENT...");
-
-        // 1. Create Array of Objects
         Droid[] squad = new Droid[3];
-
-        // 2. Initialize Objects
         squad[0] = new Droid(); squad[0].name = "R2-Unit";      squad[0].activate();
         squad[1] = new Droid(); squad[1].name = "BB-Unit";      squad[0].activate();
         squad[2] = new Droid(); squad[2].name = "C3-Protocol";  squad[0].activate();
 
         while(true) {
             System.out.println("\n--- SQUAD STATUS ---");
-            for(Droid d : squad) {
-                d.displayStatus();
-            }
-
+            for(Droid d : squad) d.displayStatus();
             System.out.println("\nActions: 1.Assign Task 2.Recharge All 3.Exit");
             int choice = input.nextInt();
             input.nextLine();
-
             if (choice == 1) {
                 System.out.print("Select Droid ID (0-2): ");
                 int id = input.nextInt();
@@ -113,7 +131,6 @@ public class Main {
             }
         }
     }
-    // ------------------------------------------------
 
     public static void runComponentSystems() {
         System.out.println("\n>> SHIP COMPONENT MANAGEMENT SYSTEM...");
