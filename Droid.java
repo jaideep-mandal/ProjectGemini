@@ -3,9 +3,12 @@ public class Droid {
     int batteryLevel;
     String status;
 
-    public void activate() {
-        status = "Online";
-        batteryLevel = 100;
+    // --- CONSTRUCTOR ---
+    // This simplifies droid creation. You give a name, it does the rest.
+    public Droid(String name) {
+        this.name = name;
+        this.batteryLevel = 100;
+        this.status = "Online";
     }
 
     public void performTask(String task) {

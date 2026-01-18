@@ -1,20 +1,27 @@
 public class Robot {
-    // PRIVATE: Direct access is forbidden
+    // Private attributes for Encapsulation
     private String id;
     private int battery;
     private String mode;    // e.g., "Idle", "Combat", "Repair"
 
-    // SETTER: Allows setting ID securely
+    // --- CONSTRUCTOR ---
+    // Initializes a new Robot in a ready state immediately.
+    public Robot(String id) {
+        this.id = id;
+        this.battery = 100;
+        this.mode = "Idle";
+    }
+
+    // --- GETTERS AND SETTERS ---
+
     public void setId(String newId) {
         id = newId;
     }
 
-    // GETTER: Allows setting ID securely
     public String getId() {
         return id;
     }
 
-    // SETTER with VALIDATION logic
     public void setMode(String newMode) {
         if (newMode.equals("Combat") || newMode.equals("Repair") || newMode.equals("Idle")) {
             mode = newMode;
@@ -28,7 +35,6 @@ public class Robot {
         return mode;
     }
 
-    // SETTER with Logic
     public void setBattery(int level) {
         if (level >= 0 && level <= 100) {
             battery = level;

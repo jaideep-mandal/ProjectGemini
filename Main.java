@@ -20,13 +20,9 @@ public class Main {
     public static void bootSystem() {
         Scanner input = new Scanner(System.in);
 
-        User activeUser = new User();
-
-        // --- UPDATED: USING SETTERS FOR SECURITY ---
-        activeUser.setName("Commander");
-        activeUser.setPin(1234);
-        activeUser.setHasFingerprint(true);
-        activeUser.setClearanceLevel(5);
+        // --- NEW: SINGLE LINE INITIALIZATION USING CONSTRUCTOR ---
+        // Instead of 5 lines  of setters , we do it all in one secure line.
+        User activeUser = new User("Commander", 1234, true, 5);
 
         if (!performLogin(input, activeUser)) {
             return;
@@ -43,7 +39,6 @@ public class Main {
             String command = commandRaw.toUpperCase();
 
             if (command.equals("EXIT")) {
-                // UPDATED: USING GETTER
                 System.out.println(RESET + "SHUTTING DOWN SYSTEM... GOODBYE, " + activeUser.getName());
                 break;
             }
@@ -78,77 +73,26 @@ public class Main {
         input.close();
     }
 
-    public static boolean performLogin(Scanner input, User authorizedUser) {
-        System.out.println("Starting Project: ProjectGemini");
-        System.out.print("Enter User Name: ");
-        String inputName = input.nextLine();
-
-        // UPDATED: USING GETTER
-        if (!inputName.equalsIgnoreCase(authorizedUser.getName())) {
-            System.out.println(RED + "\n[ERROR]: USER NOT FOUND." + RESET);
-            return false;
-        }
-
-        System.out.print("Enter Security PIN: ");
-        int inputPin = input.nextInt();
-
-        System.out.print("Fingerprint Verified? (true/false): ");
-        boolean inputFingerprint = input.nextBoolean();
-        input.nextLine();
-
-        // UPDATED: USING GETTERS
-        if ((inputPin == authorizedUser.getPin()) || (inputFingerprint && authorizedUser.isHasFingerprint())) {
-            System.out.println("\n--- ACCESS GRANTED ---");
-            System.out.println("Welcome, " + authorizedUser.getName() + "!");
-            return true;
-        } else {
-            System.out.println(RED + "\n[ERROR]: AUTHENTICATION FAILED." + RESET);
-            return false;
-        }
-    }
-
-    public static void runUpink(Scanner input, boolean isSecure, User user) {
-        if (!isSecure) {
-            System.out.println(RED + "\n[ERROR]: UPLINK DENIED." + currentTheme);
-        } else {
-            System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
-            System.out.print("Enter Messege: ");
-            String msg = input.nextLine();
-            // UPDATED: USING GETTERS
-            System.out.println("TRANSMISSION AUTHOR: " + user.getName() + " (Level " + user.getClearanceLevel() + ")");
-            System.out.println("Sending: " + msg.replace("danger", "[REDACTED]"));
-        }
-    }
-
-    // --- EXISTING METHODS (UNCHANGED) ---
-    public static void runRobotController(Scanner input) {
-        System.out.println("\n>> ROBOT CONTROL INTERFACE...");
-        Robot bot = new Robot();
-        bot.setId("XJ-9");
-        bot.setBattery(100);
-        bot.setMode("Idle");
-        System.out.println("Connected to: " + bot.getId());
-        System.out.println("Current Mode: " + bot.getMode());
-        System.out.println("\n[TEST]: Attempting to set Invalid Mode...");
-        bot.setMode("DanceParty");
-        System.out.println("\n[TEST]: Attempting to set Invalid Battery...");
-        bot.setBattery(5000);
-        System.out.println("\n[STATUS]: " + bot.getId() + " remains in " + bot.getMode() + " mode.");
-    }
+    // --- UPDATED MODULES TO USE CONSTRUCTORS ---
 
     public static void runDroidSquad(Scanner input) {
         System.out.println("\n>> DROID SQUAD MANAGEMENT...");
-        Droid[] squad = new Droid[3];
-        squad[0] = new Droid(); squad[0].name = "R2-Unit";      squad[0].activate();
-        squad[1] = new Droid(); squad[1].name = "BB-Unit";      squad[0].activate();
-        squad[2] = new Droid(); squad[2].name = "C3-Protocol";  squad[0].activate();
+
+        // Creating arry of object using Constructors
+        Droid[] squad = {
+            new Droid("R2-Unit"),
+            new Droid("BB-Unit"),
+            new Droid("C3-Protocol")
+        };
 
         while(true) {
             System.out.println("\n--- SQUAD STATUS ---");
             for(Droid d : squad) d.displayStatus();
+
             System.out.println("\nActions: 1.Assign Task 2.Recharge All 3.Exit");
             int choice = input.nextInt();
             input.nextLine();
+
             if (choice == 1) {
                 System.out.print("Select Droid ID (0-2): ");
                 int id = input.nextInt();
@@ -166,6 +110,25 @@ public class Main {
         }
     }
 
+    public static void runRobotController(Scanner input) {
+        System.out.println("\n>> ROBOT CONTROL INTERFACE...");
+
+        // Constructor initializes ID, Battery, and Mode automatically
+        Robot bot = new Robot("XJ-9");
+
+        System.out.println("Connected to: " + bot.getId());
+        System.out.println("Current Mode: " + bot.getMode());
+
+        System.out.println("\n[TEST]: Attempting to set Invalid Mode...");
+        bot.setMode("DanceParty");
+
+        System.out.println("\n[TEST]: Attempting to set Invalid Battery...");
+        bot.setBattery(5000);
+
+        System.out.println("\n[STATUS]: " + bot.getId() + " remains in " + bot.getMode() + " mode.");
+    }
+
+    // --- EXISTING METHODS (UNCHANGED) ---
     public static void runComponentSystems() {
         System.out.println("\n>> SHIP COMPONENT MANAGEMENT SYSTEM...");
         Engine mainEngine = new Engine();
@@ -185,6 +148,33 @@ public class Main {
         System.out.println("[SYSTEM TEST]");
         mainEngine.boost();
         laserCannon.fire();
+    }
+
+    public static boolean performLogin(Scanner input, User authorizedUser) {
+        System.out.println("Starting Project: ProjectGemini");
+        System.out.print("Enter User Name: ");
+        String inputName = input.nextLine();
+
+        if (!inputName.equalsIgnoreCase(authorizedUser.getName())) {
+            System.out.println(RED + "\n[ERROR]: USER NOT FOUND." + RESET);
+            return false;
+        }
+
+        System.out.print("Enter Security PIN: ");
+        int inputPin = input.nextInt();
+
+        System.out.print("Fingerprint Verified? (true/false): ");
+        boolean inputFingerprint = input.nextBoolean();
+        input.nextLine();
+
+        if ((inputPin == authorizedUser.getPin()) || (inputFingerprint && authorizedUser.isHasFingerprint())) {
+            System.out.println("\n--- ACCESS GRANTED ---");
+            System.out.println("Welcome, " + authorizedUser.getName() + "!");
+            return true;
+        } else {
+            System.out.println(RED + "\n[ERROR]: AUTHENTICATION FAILED." + RESET);
+            return false;
+        }
     }
 
     public static boolean runDiagnostics(Scanner input) {
@@ -345,6 +335,18 @@ public class Main {
         }
         for (int i = 0; i < chars.length; i++) chars[i] = (char) (chars[i] + 5);
         return "[Q-SECURE]: " + new String(chars);
+    }
+
+    public static void runUpink(Scanner input, boolean isSecure, User user) {
+        if (!isSecure) {
+            System.out.println(RED + "\n[ERROR]: UPLINK DENIED." + currentTheme);
+        } else {
+            System.out.println("\n>> ACCESSING TRANSMISSION UPLINK...");
+            System.out.print("Enter Messege: ");
+            String msg = input.nextLine();
+            System.out.println("TRANSMISSION AUTHOR: " + user.getName() + " (Level " + user.getClearanceLevel() + ")");
+            System.out.println("Sending: " + msg.replace("danger", "[REDACTED]"));
+        }
     }
 
     public static void runScanner (Scanner input) {

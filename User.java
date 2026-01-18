@@ -1,22 +1,37 @@
 public class User {
-    // 1. DATA HIDING: Mark attributes as private
+    // 1. DATA HIDING: Private attributes
     private String name;
     private int pin;
     private boolean hasFingerprint;
     private int clearanceLevel;
 
-    // 2. GETTERS AND SETTERS
+    // --- 2. CONSTRUCTOR ---
+    // This allows us to set all data INSTANTLY when creating the object.
+    public User(String name, int pin, boolean hasFingerprint, int clearanceLevel) {
+        this.name = name;   // Use setters inside constructor for validation!
+        this.pin = pin;
+        this.hasFingerprint = hasFingerprint;   // Direct set (no validation needed yet)
+        this.clearanceLevel = clearanceLevel;
+    }
 
+    // Default Constructor (Optional, but good practice)
+    public User() {
+        this.name = "Guest";
+        this.pin = 0000;
+        this.hasFingerprint = false;
+        this.clearanceLevel = 1;
+    }
+
+    // Getters and Setters remain the same...
     public String getName() {
         return name;
     }
 
     public void setName(String n) {
-        // Validation: Name cannot be empty
         if (n != null && !n.trim().isEmpty()) {
             this.name = n;
         } else {
-            System.out.println(">> [ERROR]: Invalid Name.");
+            System.out.println(">> [ERROR]: Invalid Name. Keeping old value.");
         }
     }
 
@@ -25,11 +40,10 @@ public class User {
     }
 
     public void setPin(int p) {
-        // Validation: PIN must be 4 digits
         if (p >= 1000 && p <= 9999) {
             this.pin = p;
         } else {
-            System.out.println(">> [ERROR]: Security Alert! PIN must be 4 digits.");
+            System.out.println(">> [ERROR]: PIN must be 4 digits. Keeping old PIN.");
         }
     }
 
@@ -46,11 +60,10 @@ public class User {
     }
 
     public void setClearanceLevel(int level) {
-        // Validation: Level 1-5 only
         if (level >= 1 && level <= 5) {
             this.clearanceLevel = level;
         } else {
-            System.out.println(">> [ERROR]: Invalid Clearance Level.");
+            System.out.println(">> [ERROR]: Invalid Clearance Level (1-5).");
         }
     }
 
